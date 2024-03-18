@@ -19,10 +19,10 @@ func main() {
     default:
         break
     }
-
+    
     updateUserData()
 
-    TwitchChat()
+    let _ = TwitchChatManager()
     
     // Continuous loop to keep the program running.
     while true {

@@ -43,11 +43,16 @@ func updateUserData() {
             UserDefaults.standard.synchronize()
         }
         
+        print("Insert full folder path where data.json and sound.mp3 will be:\nExample: /Users/yourusername/ChatBot/")
+        if let path = readLine(), !path.isEmpty {
+            UserDefaults.standard.setValue(path, forKey: "filePath")
+            UserDefaults.standard.synchronize()
+        }
     }
 }
 
 func deleUserData() {
-    let keysToRemove = ["twitchToken", "srToken", "channelName", "botUserName", "botRealName", "botNick"]
+    let keysToRemove = ["twitchToken", "srToken", "channelName", "botUserName", "botRealName", "botNick", "filePath"]
     
     for key in keysToRemove {
         UserDefaults.standard.removeObject(forKey: key)
@@ -69,9 +74,13 @@ func getStreamer() -> String {
     return UserDefaults.standard.object(forKey: "channelName") as! String
 }
 
+func getFilePath() -> String{
+    return UserDefaults.standard.object(forKey: "filePath") as! String
+}
+
 func getJson() -> [String: Any] {
-    
-    let filePath = "/Users/leonardoluiz/dev/Twitch Bot/Twitch Bot/Assets/data.json"
+    let path = getFilePath()
+    let filePath = "\(path)data.json"
     let url = URL(fileURLWithPath: filePath)
     do {
         let data = try Data(contentsOf: url)
@@ -88,7 +97,8 @@ func getJson() -> [String: Any] {
 
 
 func updateJson(json: [String: Any]) {
-    let filePath = "/Users/leonardoluiz/dev/Twitch Bot/Twitch Bot/Assets/data.json"
+    let path = getFilePath()
+    let filePath = "\(path)data.json"
     let url = URL(fileURLWithPath: filePath)
     do {
         let jsonData = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])

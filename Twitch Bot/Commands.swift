@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AVFoundation
 
 //Log battle
 func logBattle(eventId: String, captainName: String, scale: String, qttPlayers: String, enmPlayers: String, power: String, enmPower: String, spell: String, enmSpell: String, unit: String, enmUnit: String, plan: String, enmPlan: String, outcome: String) -> String {
@@ -96,6 +97,19 @@ func updateList(username:String, listId: String) {
 
 //Play audio cue to start battle
 func playBattle() {
+    let path = getFilePath()
+    do {
+        let url = URL(fileURLWithPath: "\(path)audio.mp3")
+        let audioPlayer = try AVAudioPlayer(contentsOf: url)
+        audioPlayer.play()
+        
+        while audioPlayer.isPlaying {
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+        }
+    } catch {
+        print("Error playing audio: \(error.localizedDescription)")
+    }
+    
     
     let process = Process()
     process.launchPath = "/usr/bin/say"

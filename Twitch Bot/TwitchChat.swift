@@ -8,13 +8,17 @@ let thxArray = ["thanks", "thank you", "thx", "thank you very much"]
 
 class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
     let session = URLSession(configuration: .default)
-    let user: IRCUser
-    let server: IRCServer
-    let channel: IRCChannel
+    var user: IRCUser
+    var server: IRCServer?
+    var channel: IRCChannel?
+    let twitchHostname = "irc.chat.twitch.tv"
+    let twitchPort = 6667
+    var chName: String
     
     init() {
         // Fetch Twitch data
-        let (token, chName, bot, real, nick) = getTwitchData()
+        let (token, fetchedChName, bot, real, nick) = getTwitchData()
+        self.chName = fetchedChName // Assign fetched channel name to chName
         
         // Initialize IRCUser
         self.user = IRCUser(
@@ -25,29 +29,32 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
             password: token
         )
         
+        establishConnection()
+    }
+
+    private func establishConnection() {
         // Initialize IRCServer and IRCChannel
         self.server = IRCServer(
-            hostname: "irc.chat.twitch.tv",
-            port: 6667,
+            hostname: twitchHostname,
+            port: twitchPort,
             user: self.user,
             session: session
         )
-        // Join the channel you want. This seems to be case-sensitive.
-        self.channel = server.join(chName)
-        
-        server.delegate = self
-        channel.delegate = self
-        
-        
-        channel.send("DoritosChip")
+        self.channel = server?.join(chName)
+
+        server?.delegate = self
+        channel?.delegate = self
+
+        channel?.send("DoritosChip")
     }
-    
+
     // Server messages containing user lists, connection confirmation
     func didRecieveMessage(_ server: IRCServer, message: String) {
-        //print("Server message:", message)
+        // Handle server messages
     }
-    
+
     func didRecieveMessage(_ channel: IRCChannel, message: String) {
+        // Handle channel messages
         let components = message.components(separatedBy: ": ")
         if components.count == 2 {
             let user = components[0]
@@ -82,6 +89,31 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
                 let data = command.components(separatedBy: " ")
                 channel.send(logBattle(eventId: data[1], captainName: data[2], scale: data[3], qttPlayers: data[4], enmPlayers: data[5], power: data[6], enmPower: data[7], spell: data[8], enmSpell: data[9], unit: data[10], enmUnit: data[11], plan: data[12], enmPlan: data[13], outcome: data[14]))
             }
+        }
+    }
+}
+
+class TwitchChatManager {
+    var tChat: TwitchChat?
+    let timerInterval: TimeInterval = 300 // 5 minutes
+    
+    init() {
+        createAndConnectTwitchChat()
+        startRepeatingTimer()
+    }
+    
+    private func createAndConnectTwitchChat() {
+        tChat = TwitchChat()
+    }
+    
+    private func disconnectAndDestroyTwitchChat() {
+        tChat = nil
+    }
+    
+    private func startRepeatingTimer() {
+        Timer.scheduledTimer(withTimeInterval: timerInterval, repeats: true) { [weak self] timer in
+            self?.disconnectAndDestroyTwitchChat()
+            self?.createAndConnectTwitchChat()
         }
     }
 }
