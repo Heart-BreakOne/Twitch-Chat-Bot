@@ -70,13 +70,10 @@ func getJson() -> [String: Any] {
     let filePath = "/Users/leonardoluiz/dev/SR-Tools/Twitch bot/Twitch bot/Assets/data.json"
     let url = URL(fileURLWithPath: filePath)
     do {
-        // Read the contents of the file
         let data = try Data(contentsOf: url)
         
-        // Parse the JSON data
         let json = try JSONSerialization.jsonObject(with: data, options: [])
         
-        // Handle the JSON object as needed
         return json as! [String: Any]
     } catch {
         print("Error: Unable to read or parse the JSON file - \(error)")
