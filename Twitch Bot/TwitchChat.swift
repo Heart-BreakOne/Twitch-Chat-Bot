@@ -4,11 +4,13 @@
 
 import Foundation
 
+let thxArray = ["thanks", "thank you", "thx", "thank you very much"]
 class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
     let session = URLSession(configuration: .default)
     let user: IRCUser
     let server: IRCServer
     let channel: IRCChannel
+    var messageTimer: Timer?
     
     init() {
         // Fetch Twitch data
@@ -38,6 +40,24 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
         
         // Send a message:
         channel.send("DoritosChip")
+        
+        startMessageTimer()
+        
+    }
+    
+    func startMessageTimer() {
+        stopMessageTimer()
+        let randomTimeInterval = Double.random(in: 420...720)
+        
+        messageTimer = Timer.scheduledTimer(withTimeInterval: randomTimeInterval, repeats: false) { [weak self] _ in
+            self?.channel.send("DoritosChip")
+            self?.startMessageTimer()
+        }
+    }
+    
+    func stopMessageTimer() {
+        messageTimer?.invalidate()
+        messageTimer = nil
     }
     
     func didRecieveMessage(_ server: IRCServer, message: String) {
@@ -45,11 +65,17 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
     }
     
     func didRecieveMessage(_ channel: IRCChannel, message: String) {
-        
         let components = message.components(separatedBy: ": ")
         if components.count == 2 {
             let user = components[0]
             let command = components[1]
+            
+            for thxWord in thxArray {
+                if command.lowercased().hasPrefix(thxWord) {
+                    channel.send("@\(user), you're welcome DoritosChip")
+                    return
+                }
+            }
             
             if !(command.first == "!") && (command != "DoritosChip") && (command != "BOP"){
                 return
