@@ -40,7 +40,7 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
             user: self.user,
             session: session
         )
-        self.channel = server?.join(chName)
+        self.channel = server.join(chName)
 
         server?.delegate = self
         channel?.delegate = self
@@ -51,11 +51,11 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
     // Server messages containing user lists, connection confirmation
     func didRecieveMessage(_ server: IRCServer, message: String) {
         // Handle server messages
-        print(message)
+        //print(message)
     }
 
     func didRecieveMessage(_ channel: IRCChannel, message: String) {
-        print(message)
+        //print(message)
         // Handle channel messages
         let components = message.components(separatedBy: ": ")
         if components.count == 2 {
@@ -96,6 +96,11 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
 }
 
 func verifyCommand(channel: IRCChannel, user: String, command: String, argument: String) {
+    let (_, _, bot, _, _) = getTwitchData()
+    if (user.lowercased() == bot.lowercased()) {
+        return
+    }
+    
     switch command {
     case "!battle":
         playBattle()

@@ -104,7 +104,7 @@ public class IRCServer {
         let input = IRCServerInputParser.parseServerMessage(message)
         switch input {
         case .serverMessage(_, let message):
-            print(message)
+            //print(message)
             if let delegate = self.delegate {
                 delegate.didRecieveMessage(self, message: message)
             } else {
@@ -141,7 +141,7 @@ public class IRCServer {
             if let error = error {
                 print("Failed to send: \(String(describing: error))")
             } else {
-                print("Sent!")
+                //print("Sent!")
             }
         }
     }

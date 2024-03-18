@@ -22,7 +22,15 @@ func main() {
     
     updateUserData()
 
-    let _ = TwitchChat()
+    let twitchChatClosure = { () -> Void in
+        while true {
+            let twitchChat = TwitchChat()
+            sleep(600)
+        }
+    }
+    twitchChatClosure()
+
+    /*let _ = TwitchChat()
     
     // Continuous loop to keep the program running.
     while true {
@@ -32,7 +40,7 @@ func main() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             // Loop delay
         }
-    }
+    }*/
 }
 
 main()
