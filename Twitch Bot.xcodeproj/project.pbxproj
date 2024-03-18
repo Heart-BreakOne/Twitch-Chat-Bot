@@ -34,7 +34,7 @@
 		825770F72BA6F30F0020E335 /* Twitch Bot */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Twitch Bot"; sourceTree = BUILT_PRODUCTS_DIR; };
 		825771012BA6F31B0020E335 /* Tasks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tasks.swift; sourceTree = "<group>"; };
 		825771032BA6F31B0020E335 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
-		825771052BA6F31B0020E335 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
+		825771052BA6F31B0020E335 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = data.json; path = "/Users/leonardoluiz/dev/Twitch Bot/Twitch Bot/Assets/data.json"; sourceTree = "<absolute>"; };
 		8278BE8B2BA7B7E400DC395A /* IRC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IRC.swift; sourceTree = "<group>"; };
 		8278BE8D2BA7B7ED00DC395A /* IRCServerInputParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IRCServerInputParser.swift; sourceTree = "<group>"; };
 		8278BE912BA7C46900DC395A /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };

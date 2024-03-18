@@ -65,9 +65,13 @@ func getTwitchData() -> (String, String, String, String, String) {
     return (token, channel, bot, real, nick)
 }
 
+func getStreamer() -> String {
+    return UserDefaults.standard.object(forKey: "channelName") as! String
+}
+
 func getJson() -> [String: Any] {
     
-    let filePath = "/Users/leonardoluiz/dev/SR-Tools/Twitch bot/Twitch bot/Assets/data.json"
+    let filePath = "~/dev/Twitch Bot/Twitch Bot/Assets/data.json"
     let url = URL(fileURLWithPath: filePath)
     do {
         let data = try Data(contentsOf: url)
@@ -84,7 +88,7 @@ func getJson() -> [String: Any] {
 
 
 func updateJson(json: [String: Any]) {
-    let filePath = "/Users/leonardoluiz/dev/SR-Tools/Twitch bot/Twitch bot/Assets/data.json"
+    let filePath = "~/dev/Twitch Bot/Twitch Bot/Assets/data.json"
     let url = URL(fileURLWithPath: filePath)
     do {
         let jsonData = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])

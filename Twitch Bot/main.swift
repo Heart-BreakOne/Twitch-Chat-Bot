@@ -22,24 +22,16 @@ func main() {
 
     updateUserData()
 
-    /*
-    let msg = addWatchList(username: "maria")
-
-    banUser(username: "angel") { result in
-        print(result)
-    }
-    unbanUser(username: "angel") { result in
-        print(result)
-    }
-     */
     let _ = TwitchChat()
     
     // Continuous loop to keep the program running.
     while true {
         DispatchQueue.global().async {
-            // twitchChat.sendMessage("Hello, world!")
+            // Background tasks if needed
         }
-        sleep(3)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            // Loop delay
+        }
     }
 }
 

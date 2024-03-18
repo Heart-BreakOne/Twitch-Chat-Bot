@@ -8,9 +8,9 @@
 import Foundation
 
 //Log battle
-func logBattle(eventId: String, captainName: String, scale: String, qttPlayers: String, enmPlayers: String, power: String, enmPower: String, spell: String, enmSpell: String, unit: String, enmUnit: String, outcome: String) -> String {
+func logBattle(eventId: String, captainName: String, scale: String, qttPlayers: String, enmPlayers: String, power: String, enmPower: String, spell: String, enmSpell: String, unit: String, enmUnit: String, plan: String, enmPlan: String, outcome: String) -> String {
     
-    let dataToLog = ["event": eventId, "capName": captainName, "scale": scale, "qttPlayers": qttPlayers, "enmPlayers": enmPlayers, "power": power, "enmPower": enmPower, "spell": spell, "enmSpell": enmSpell, "unit": unit, "enmunit": enmUnit, "outcome": outcome] as [String : Any]
+    let dataToLog = ["event": eventId, "capName": captainName, "scale": scale, "qttPlayers": qttPlayers, "enmPlayers": enmPlayers, "power": power, "enmPower": enmPower, "spell": spell, "enmSpell": enmSpell, "unit": unit, "enmunit": enmUnit, "plan": plan, "enmPlan": enmPlan, "outcome": outcome] as [String : Any]
     var json = getJson()
     var log = json["log"] as! [[String: Any]]
     log.insert(dataToLog, at: 0)
@@ -58,7 +58,7 @@ func sendCode() -> String {
     let json = getJson()
     let code = json["code"] as! String
     if code == "none" {
-        return "No code at the moment"
+        return "No code at the moment! DoritosChip"
     } else {
         return "Code is \(code). Please follow the markers, no tank souls, no spies, do not erase tactical markers with wrong placements."
     }

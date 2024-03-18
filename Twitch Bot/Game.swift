@@ -89,7 +89,7 @@ func makeRequest(urlString: String, completion: @escaping ((Data?) -> Void)) {
     
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
-    request.setValue(token, forHTTPHeaderField: "Cookie")
+    request.setValue("ACCESS_INFO=\(token)", forHTTPHeaderField: "Cookie")
     request.setValue("Mozilla/5.0", forHTTPHeaderField: "User-Agent")
     
     let session = URLSession(configuration: .default)
