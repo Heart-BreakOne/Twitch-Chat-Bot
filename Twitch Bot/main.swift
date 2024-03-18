@@ -22,7 +22,7 @@ func main() {
     
     updateUserData()
 
-    let _ = TwitchChatManager()
+    let _ = TwitchChat()
     
     // Continuous loop to keep the program running.
     while true {

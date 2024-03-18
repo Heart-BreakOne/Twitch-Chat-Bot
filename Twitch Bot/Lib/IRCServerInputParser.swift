@@ -18,7 +18,7 @@ struct IRCServerInputParser {
             let firstSpaceIndex = message.firstIndex(of: " ")!
             let source = message[..<firstSpaceIndex]
             let rest = message[firstSpaceIndex...].trimmingCharacters(in: .whitespacesAndNewlines)
-            //print(source)
+            print(source)
             
             if rest.hasPrefix("PRIVMSG") {
                 let remaining = rest[rest.index(message.startIndex, offsetBy: 8)...]

@@ -18,7 +18,7 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
     init() {
         // Fetch Twitch data
         let (token, fetchedChName, bot, real, nick) = getTwitchData()
-        self.chName = fetchedChName // Assign fetched channel name to chName
+        self.chName = fetchedChName
         
         // Initialize IRCUser
         self.user = IRCUser(
@@ -51,9 +51,11 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
     // Server messages containing user lists, connection confirmation
     func didRecieveMessage(_ server: IRCServer, message: String) {
         // Handle server messages
+        print(message)
     }
 
     func didRecieveMessage(_ channel: IRCChannel, message: String) {
+        print(message)
         // Handle channel messages
         let components = message.components(separatedBy: ": ")
         if components.count == 2 {
@@ -89,31 +91,6 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
                 let data = command.components(separatedBy: " ")
                 channel.send(logBattle(eventId: data[1], captainName: data[2], scale: data[3], qttPlayers: data[4], enmPlayers: data[5], power: data[6], enmPower: data[7], spell: data[8], enmSpell: data[9], unit: data[10], enmUnit: data[11], plan: data[12], enmPlan: data[13], outcome: data[14]))
             }
-        }
-    }
-}
-
-class TwitchChatManager {
-    var tChat: TwitchChat?
-    let timerInterval: TimeInterval = 300 // 5 minutes
-    
-    init() {
-        createAndConnectTwitchChat()
-        startRepeatingTimer()
-    }
-    
-    private func createAndConnectTwitchChat() {
-        tChat = TwitchChat()
-    }
-    
-    private func disconnectAndDestroyTwitchChat() {
-        tChat = nil
-    }
-    
-    private func startRepeatingTimer() {
-        Timer.scheduledTimer(withTimeInterval: timerInterval, repeats: true) { [weak self] timer in
-            self?.disconnectAndDestroyTwitchChat()
-            self?.createAndConnectTwitchChat()
         }
     }
 }
@@ -205,7 +182,16 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
     case "!lurk":
         channel.send("DoritosChip \(user) enjoy lurking DoritosChip")
     case "!unlurk":
-        channel.send(" DoritosChip \(user), welcome back to Streamlandia! DoritosChip")
+        channel.send("DoritosChip \(user), welcome back to Streamlandia! DoritosChip")
+    case "!DoritosChip":
+        let i = Int(arc4random_uniform(4))
+        var doritosChip = "DoritosChip"
+        var count = 0
+        while count < i {
+            doritosChip += " DoritosChip"
+            count += 1
+        }
+        channel.send(doritosChip)
     default:
         channel.send("DoritosChip \(command) is not a command yet DoritosChip")
     }

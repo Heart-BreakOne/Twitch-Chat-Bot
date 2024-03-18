@@ -9,7 +9,7 @@ import Foundation
 
 func updateUserData() {
     if UserDefaults.standard.value(forKey: "twitchToken") is String {
-        print("Token already exists, starting chat bot...")
+        print("Starting chat bot...")
     } else {
         print("Insert SR token:")
         if let srToken = readLine(), !srToken.isEmpty {
