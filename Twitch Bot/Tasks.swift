@@ -71,7 +71,7 @@ func getStreamer() -> String {
 
 func getJson() -> [String: Any] {
     
-    let filePath = "~/dev/Twitch Bot/Twitch Bot/Assets/data.json"
+    let filePath = "/Users/leonardoluiz/dev/Twitch Bot/Twitch Bot/Assets/data.json"
     let url = URL(fileURLWithPath: filePath)
     do {
         let data = try Data(contentsOf: url)
@@ -88,7 +88,7 @@ func getJson() -> [String: Any] {
 
 
 func updateJson(json: [String: Any]) {
-    let filePath = "~/dev/Twitch Bot/Twitch Bot/Assets/data.json"
+    let filePath = "/Users/leonardoluiz/dev/Twitch Bot/Twitch Bot/Assets/data.json"
     let url = URL(fileURLWithPath: filePath)
     do {
         let jsonData = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])

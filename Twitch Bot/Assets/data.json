@@ -1,19 +1,7 @@
 {
-  "permalist" : [
+  "watchlist" : [
     ""
   ],
-  "chatCommands" : [
-    "!commands, ",
-    "!ping, ",
-    "DoritosChip, ",
-    "!stats, ",
-    "!streak, ",
-    "!code\/BOP, ",
-    "!box, ",
-    "!battle, ",
-    "and !unban"
-  ],
-  "code" : "none",
   "commands" : [
     "commands",
     "ping, ",
@@ -32,6 +20,47 @@
     "ban, ",
     "and unban"
   ],
+  "chatCommands" : [
+    "!commands, ",
+    "!ping, ",
+    "DoritosChip, ",
+    "!stats, ",
+    "!streak, ",
+    "!code\/BOP, ",
+    "!box, ",
+    "!battle, ",
+    "!lurk, ",
+    "!unlurk, ",
+    "!streamraiders, ",
+    "and !unban"
+  ],
+  "phrases" : [
+    "Let's box the enemy!!",
+    "Stream Raiders in-box!!",
+    "Schrödinger's Stream Raiders!!",
+    "Surround and conquer!!",
+    "Cordon off the adversary!!",
+    "Hem them in!!",
+    "Bottle up the enemy!!",
+    "Establish a containment zone!!!!",
+    "Construct a barrier around the opposition",
+    "Stream Raiders, form a tactical box!!",
+    "Stream Raiders, envelop the adversary!!",
+    "We're on the march with Stream Raiders, create the box!!",
+    "Stream Raiders, let's siege in formation!!",
+    "Stream Raiders, lock them down in a box!!",
+    "Stream Raiders, confine and conquer!!",
+    "Stream Raiders, let's Stream-cordon the opposition!!",
+    "We're Stream Raiders - let's box them up!!",
+    "Bind the adversary within our lines!!",
+    "Form a blockade!!",
+    "Stream Raiders, encase the enemy in our formation!",
+    "Stream Raiders, encapsulate the adversary in our formation!",
+    "Stream Raiders, confound them with our Stream-box!",
+    "Let's Stream-constrain their movements!",
+    "Stream Raiders, let's Stream-entrench around them!"
+  ],
+  "code" : "none",
   "log" : [
     {
       "scale" : 1,
@@ -784,37 +813,7 @@
       "outcome" : "loss"
     }
   ],
-  "watchlist" : [
-    "",
-    "privateracers",
-    "azymies",
-    "heartbreakone_",
-    "heartbreakone_"
-  ],
-  "phrases" : [
-    "Let's box the enemy!!",
-    "Stream Raiders in-box!!",
-    "Schrödinger's Stream Raiders!!",
-    "Surround and conquer!!",
-    "Cordon off the adversary!!",
-    "Hem them in!!",
-    "Bottle up the enemy!!",
-    "Establish a containment zone!!!!",
-    "Construct a barrier around the opposition",
-    "Stream Raiders, form a tactical box!!",
-    "Stream Raiders, envelop the adversary!!",
-    "We're on the march with Stream Raiders, create the box!!",
-    "Stream Raiders, let's siege in formation!!",
-    "Stream Raiders, lock them down in a box!!",
-    "Stream Raiders, confine and conquer!!",
-    "Stream Raiders, let's Stream-cordon the opposition!!",
-    "We're Stream Raiders - let's box them up!!",
-    "Bind the adversary within our lines!!",
-    "Form a blockade!!",
-    "Stream Raiders, encase the enemy in our formation!",
-    "Stream Raiders, encapsulate the adversary in our formation!",
-    "Stream Raiders, confound them with our Stream-box!",
-    "Let's Stream-constrain their movements!",
-    "Stream Raiders, let's Stream-entrench around them!"
+  "permalist" : [
+    ""
   ]
 }

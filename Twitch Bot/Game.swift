@@ -15,7 +15,7 @@ func banUser(username: String, completion: @escaping (String) -> Void){
     makeRequest(urlString: url) { _ in
         // No need to handle the response.
     }
-    completion("Banned successfully :(")
+    completion("Done :(")
 }
 
 func unbanUser(username: String, completion: @escaping (String) -> Void) {
@@ -23,7 +23,7 @@ func unbanUser(username: String, completion: @escaping (String) -> Void) {
     var json = getJson()
     let permalist = json["permalist"] as! [String]
     if permalist.contains(username) {
-        completion("@\(username), can not unban you at this occasion")
+        completion("@\(username), can not unban you at this occasion :(")
         return
     }
     var watchlist = json["watchlist"] as! [String]
@@ -65,7 +65,7 @@ func unbanUser(username: String, completion: @escaping (String) -> Void) {
                         let banUrl = "\(gameUrl)?cn=setBanStatus&command=setBanStatus&userId=\(userId)&twitchUserName=\(username)&isBanned=n"
                         
                         makeRequest(urlString: banUrl) { _ in
-                            completionString = "@\(username) you have been unbanned, the captain should be visible after this battle. Do not place tank souls, spies and erasing tactical markers may grant you a new permanent ban for being a repeat offender."
+                            completionString = "@\(username) you have been unbanned, the captain should be visible after this battle. Placing tank souls, spies or erasing tactical markers may grant you a new permanent ban for being a repeat offender."
                             completion(completionString)
                         }
                         return // Return here to avoid calling completion prematurely
@@ -73,7 +73,7 @@ func unbanUser(username: String, completion: @escaping (String) -> Void) {
                 }
 
                 // If the loop completes without finding the username
-                completion("@\(username), you are not banned. Check if you typed the username correctly! Try reloading the game")
+                completion("@\(username), you are not banned. Check if you typed the username correctly! Try reloading the game DoritosChip")
             }
         } catch {
             print("Error decoding data: \(error)")

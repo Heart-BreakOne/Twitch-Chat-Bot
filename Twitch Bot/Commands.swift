@@ -171,7 +171,7 @@ func getCaptainStats(from: String, battleLog: [[String: Any]]) -> String{
     }
     
     if wins == 0 && losses == 0 {
-        return "No data to show."
+        return "DoritosChip No data to show DoritosChip"
     } else {
         let total = wins + losses
         let winRate = Int(Double(wins) / Double(total) * 100.0)

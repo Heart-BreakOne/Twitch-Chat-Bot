@@ -5,12 +5,12 @@
 import Foundation
 
 let thxArray = ["thanks", "thank you", "thx", "thank you very much"]
+
 class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
     let session = URLSession(configuration: .default)
     let user: IRCUser
     let server: IRCServer
     let channel: IRCChannel
-    var messageTimer: Timer?
     
     init() {
         // Fetch Twitch data
@@ -38,30 +38,13 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
         server.delegate = self
         channel.delegate = self
         
-        // Send a message:
+        
         channel.send("DoritosChip")
-        
-        startMessageTimer()
-        
     }
     
-    func startMessageTimer() {
-        stopMessageTimer()
-        let randomTimeInterval = Double.random(in: 420...720)
-        
-        messageTimer = Timer.scheduledTimer(withTimeInterval: randomTimeInterval, repeats: false) { [weak self] _ in
-            self?.channel.send("DoritosChip")
-            self?.startMessageTimer()
-        }
-    }
-    
-    func stopMessageTimer() {
-        messageTimer?.invalidate()
-        messageTimer = nil
-    }
-    
+    // Server messages containing user lists, connection confirmation
     func didRecieveMessage(_ server: IRCServer, message: String) {
-        print("Server message:", message)
+        //print("Server message:", message)
     }
     
     func didRecieveMessage(_ channel: IRCChannel, message: String) {
@@ -108,6 +91,10 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
     case "!battle":
         playBattle()
     case "!unban":
+        if (argument == "") {
+            channel.send("I need an username, DoritosChip is not banned.")
+            return
+        }
         let streamer = getStreamer()
         if (streamer == user) {
             unbanUser(username: argument) { result in
@@ -120,11 +107,16 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         }
     case "!ban":
         let streamer = getStreamer()
-        if (streamer == user) {
-            banUser(username: argument) { result in
-                channel.send(result)
+        if (argument == "") {
+            channel.send("I can't ban DoritosChip")
+            return
+        }
+        else if (streamer == user) {
+                banUser(username: argument) { result in
+                    channel.send(result)
+                }
             }
-        } else {
+        else {
             channel.send("Only the captain can do that :p")
         }
     case "!streak":
@@ -143,14 +135,24 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
     case "!box":
         channel.send(sendBox())
     case "!permalist":
-        let streamer = getStreamer()
-        if (streamer == user) {
-            channel.send(addPermaList(username: argument))
+        if (argument == "") {
+            channel.send("I can't put DoritosChip on the permalist")
+            return
+        } else {
+            let streamer = getStreamer()
+            if (streamer == user) {
+                channel.send(addPermaList(username: argument))
+            }
         }
     case "!watchlist":
-        let streamer = getStreamer()
-        if (streamer == user) {
-            channel.send(addWatchList(username: argument))
+        if (argument == "") {
+            channel.send("I can't put DoritosChip on the watchlist")
+            return
+        } else {
+            let streamer = getStreamer()
+            if (streamer == user) {
+                channel.send(addWatchList(username: argument))
+            }
         }
     case "!commands":
         channel.send(sendCommands())
@@ -159,15 +161,23 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
     case "!ping":
         channel.send("pong")
     case "!predict":
-        channel.send("We are still collecting enough data to reliably predict battles :p")
+        channel.send("We are still collecting enough data to reliably predict battles DoritosChip")
     case "!stats":
-        channel.send(checkStats(from: argument))
+        if(argument == "DoritosChip") {
+            channel.send("DoritosChip Winning rate is 100% DoritosChip")
+        } else {
+            channel.send(checkStats(from: argument))
+        }
+    case "!streamraiders":
+        channel.send("\(user) Join the fight at https://www.streamraiders.com/t/\(getStreamer())")
+    case "!lurk":
+        channel.send("DoritosChip \(user) enjoy lurking DoritosChip")
+    case "!unlurk":
+        channel.send(" DoritosChip \(user), welcome back to Streamlandia! DoritosChip")
     default:
-        print("Default")
+        channel.send("DoritosChip \(command) is not a command yet DoritosChip")
     }
 }
 func handleTwitch() throws {
     sleep(3)
 }
-
-
