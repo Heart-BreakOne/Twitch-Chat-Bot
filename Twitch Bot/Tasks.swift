@@ -94,8 +94,6 @@ func getJson() -> [String: Any] {
     return [:]
 }
 
-
-
 func updateJson(json: [String: Any]) {
     let path = getFilePath()
     let filePath = "\(path)data.json"

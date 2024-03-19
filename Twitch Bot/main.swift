@@ -24,12 +24,15 @@ func main() {
 
     let twitchChatClosure = { () -> Void in
         while true {
-            let twitchChat = TwitchChat()
-            sleep(600)
+            var twitchChat: TwitchChat? = TwitchChat()
+    
+            sleep(500)
+            twitchChat?.terminate()
+            twitchChat = nil
         }
     }
-    twitchChatClosure()
 
+    twitchChatClosure()
     /*let _ = TwitchChat()
     
     // Continuous loop to keep the program running.

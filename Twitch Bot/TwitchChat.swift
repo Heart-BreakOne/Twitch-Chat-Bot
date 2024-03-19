@@ -7,6 +7,7 @@ import Foundation
 let thxArray = ["thanks", "thank you", "thx", "thank you very much"]
 
 class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
+
     let session = URLSession(configuration: .default)
     var user: IRCUser
     var server: IRCServer?
@@ -16,6 +17,7 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
     var chName: String
     
     init() {
+
         // Fetch Twitch data
         let (token, fetchedChName, bot, real, nick) = getTwitchData()
         self.chName = fetchedChName
@@ -31,7 +33,7 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
         
         establishConnection()
     }
-
+    
     private func establishConnection() {
         // Initialize IRCServer and IRCChannel
         self.server = IRCServer(
@@ -40,22 +42,37 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
             user: self.user,
             session: session
         )
-        self.channel = server.join(chName)
-
+        self.channel = server?.join(chName)
+        
         server?.delegate = self
         channel?.delegate = self
-
-        channel?.send("DoritosChip")
+        
+        // let formattedTime = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .medium)
+        // channel?.send("\(formattedTime) - DoritosChip")
+        // channel?.send("DoritosChip")
     }
+    
+    func terminate() {
+            // Send QUIT message to IRC server
+            server?.send("QUIT :Shutting down")
+            
+            // Clear delegates to avoid retain cycles
+            server?.delegate = nil
+            channel?.delegate = nil
+            
+            // Release resources or perform any additional cleanup tasks if needed
 
+        }
+
+    
     // Server messages containing user lists, connection confirmation
     func didRecieveMessage(_ server: IRCServer, message: String) {
         // Handle server messages
         //print(message)
     }
-
+    
     func didRecieveMessage(_ channel: IRCChannel, message: String) {
-        //print(message)
+        // print(message)
         // Handle channel messages
         let components = message.components(separatedBy: ": ")
         if components.count == 2 {
@@ -82,13 +99,17 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
             if commandComponents.count >= 2 {
                 argument = commandComponents[1]
             }
-            print("User: \(user)")
+            print("\nUser: \(user)")
             print("Command: \(commandName)")
             print("Argument: \(argument)")
             
             verifyCommand(channel: channel, user: user, command: commandName, argument: argument)
             if (user == getStreamer() && (commandName == "!log")) {
                 let data = command.components(separatedBy: " ")
+                if (data.count != 15) {
+                    channel.send("Can't log DoritosChip")
+                    return
+                }
                 channel.send(logBattle(eventId: data[1], captainName: data[2], scale: data[3], qttPlayers: data[4], enmPlayers: data[5], power: data[6], enmPower: data[7], spell: data[8], enmSpell: data[9], unit: data[10], enmUnit: data[11], plan: data[12], enmPlan: data[13], outcome: data[14]))
             }
         }
@@ -100,17 +121,14 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
     if (user.lowercased() == bot.lowercased()) {
         return
     }
+    let command = command.lowercased()
+    let argument = argument.lowercased()
     
     switch command {
     case "!battle":
         playBattle()
     case "!unban":
-        if (argument == "") {
-            channel.send("I need an username, DoritosChip is not banned.")
-            return
-        }
-        let streamer = getStreamer()
-        if (streamer == user) {
+        if argument != "" {
             unbanUser(username: argument) { result in
                 channel.send(result)
             }
@@ -126,28 +144,28 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
             return
         }
         else if (streamer == user) {
-                banUser(username: argument) { result in
-                    channel.send(result)
-                }
+            banUser(username: argument) { result in
+                channel.send(result)
             }
+        }
         else {
             channel.send("Only the captain can do that :p")
         }
     case "!streak":
         channel.send(sendStreak())
-    case "!setCode":
+    case "!setcode":
         let streamer = getStreamer()
         if (streamer == user) {
             channel.send(setCode(code: argument))
         }
+    case "!quote":
+        channel.send(sendRdmStr(key: "gameTips"))
     case "!code":
-        channel.send(sendCode())
-    case "BOP":
-        channel.send(sendCode())
-    case "DoritosChip":
-        channel.send("DoritosChip DoritosChip DoritosChip DoritosChip DoritosChip ")
+        channel.send("\(sendCode())")
+    case "bop":
+        channel.send("\(sendCode())")
     case "!box":
-        channel.send(sendBox())
+        channel.send(sendRdmStr(key: "phrases"))
     case "!permalist":
         if (argument == "") {
             channel.send("I can't put DoritosChip on the permalist")
@@ -155,7 +173,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         } else {
             let streamer = getStreamer()
             if (streamer == user) {
-                channel.send(addPermaList(username: argument))
+                channel.send(updateList(username: argument, listId: "permalist"))
             }
         }
     case "!watchlist":
@@ -165,7 +183,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         } else {
             let streamer = getStreamer()
             if (streamer == user) {
-                channel.send(addWatchList(username: argument))
+                channel.send(updateList(username: argument, listId: "watchlist"))
             }
         }
     case "!commands":
@@ -188,19 +206,19 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         channel.send("DoritosChip \(user) enjoy lurking DoritosChip")
     case "!unlurk":
         channel.send("DoritosChip \(user), welcome back to Streamlandia! DoritosChip")
-    case "!DoritosChip":
-        let i = Int(arc4random_uniform(4))
-        var doritosChip = "DoritosChip"
-        var count = 0
-        while count < i {
-            doritosChip += " DoritosChip"
-            count += 1
-        }
-        channel.send(doritosChip)
+    case "doritoschip":
+        channel.send(getDoritos())
+    case "!doritoschip":
+        channel.send(getDoritos())
+    case "!join":
+        channel.send("\(user) Join the fight at https://www.streamraiders.com/t/\(getStreamer())")
+    case "!log":
+        break
+    case "!myunit":
+        channel.send("@\(user)\(getUnitOfTheDay())")
+    case "!rules":
+        channel.send("@\(user) the rules are very simple: No tank souls, no spies, no erasing tactical markers and follow the markers if there are any.")
     default:
         channel.send("DoritosChip \(command) is not a command yet DoritosChip")
     }
-}
-func handleTwitch() throws {
-    sleep(3)
 }

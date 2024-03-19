@@ -61,31 +61,11 @@ func sendCode() -> String {
     if code == "none" {
         return "No code at the moment! DoritosChip"
     } else {
-        return "Code is \(code). Please follow the markers, no tank souls, no spies, do not erase tactical markers with wrong placements."
+        return "Code is \(code). Clash specific rules: Please follow the markers, no tank souls, no spies, do not erase tactical markers with wrong placements."
     }
 }
 
-//Send random message related to the PVP box strategy
-func sendBox() -> String {
-    let json = getJson()
-    let msg = json["phrases"] as! [String]
-    let randomMsg = msg.randomElement()!
-    return randomMsg
-}
-
-//Add unbanned users to watch list
-func addWatchList(username: String) -> String{
-    updateList(username: username, listId: "watchlist")
-    return "Watchlist updated successfully!"
-}
-
-//Prevent users from unbanning themselves
-func addPermaList(username:String) -> String {
-    updateList(username: username, listId: "permalist")
-    return "Permalist updated successfully!"
-}
-
-func updateList(username:String, listId: String) {
+func updateList(username:String, listId: String) -> String {
     var json = getJson()
     var list = json[listId] as! [String]
     
@@ -93,6 +73,7 @@ func updateList(username:String, listId: String) {
     json[listId] = list
     updateJson(json: json)
     
+    return "\(listId) updated successfully!"
 }
 
 //Play audio cue to start battle
@@ -109,13 +90,6 @@ func playBattle() {
     } catch {
         print("Error playing audio: \(error.localizedDescription)")
     }
-    
-    
-    let process = Process()
-    process.launchPath = "/usr/bin/say"
-    process.arguments = ["Come back here and start your battle."]
-    process.launch()
-    process.waitUntilExit()
 }
 
 // Check battle stats
@@ -149,6 +123,14 @@ func getAllStats(battleLog: [[String: Any]]) -> String {
     let total = wins + losses
     let winRate = Int(Double(wins) / Double(total) * 100.0)
     return "Historical stats: \(wins) battles won, \(losses) battles lost, \(winRate)% winning rate."
+}
+
+//Send random strings
+func sendRdmStr(key: String) -> String {
+    let json = getJson()
+    let msg = json[key] as! [String]
+    let randomMsg = msg.randomElement()!
+    return randomMsg
 }
 
 func getCurrentStats(battleLog: [[String: Any]]) -> String{
@@ -191,4 +173,28 @@ func getCaptainStats(from: String, battleLog: [[String: Any]]) -> String{
         let winRate = Int(Double(wins) / Double(total) * 100.0)
         return "Historical stats against \(from): \(wins) battles won, \(losses) battles lost, \(winRate)% winning rate."
     }
+}
+
+func getDoritos() -> String {
+    let i = Int(arc4random_uniform(4))
+    var doritosChip = "DoritosChip"
+    var count = 0
+    while count < i {
+        doritosChip += " DoritosChip"
+        count += 1
+    }
+    return doritosChip
+}
+
+func getUnitOfTheDay() -> String {
+    let lvl = Int(arc4random_uniform(30)) + 1
+    guard let unitsList = getJson()["unitsList"] as? [[String: [String]]],
+          let randomCategory = unitsList.randomElement(),
+          let unitName = randomCategory.keys.first,
+          let unitSpec = randomCategory.values.first,
+          let spec = unitSpec.randomElement() else {
+              return ""
+          }
+    let epic = arc4random_uniform(2) == 0 ? " epic " : " "
+    return " today you are level \(lvl)\(epic)\(lvl >= 20 ? spec : "") \(unitName)"
 }
