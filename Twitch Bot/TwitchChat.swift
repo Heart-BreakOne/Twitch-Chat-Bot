@@ -220,6 +220,9 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         }
     case "!myunit":
         channel.send("@\(user)\(getUnitOfTheDay())")
+    case "!chest":
+        let streamer = getStreamer()
+        channel.send("@\(streamer), a chatter wants to know about a captain that is on a \(argument) chest battle, because you are lazy I can't do it myself, do it for them.")
     case "!rules":
         channel.send("@\(user) the rules are very simple: No tank souls, no spies, no erasing tactical markers and follow the markers if there are any.")
     default:
