@@ -11,6 +11,13 @@ let gameUrl = "https://www.streamraiders.com/api/game/"
 
 func banUser(username: String, completion: @escaping (String) -> Void){
     
+    let json = getJson()
+    let permalist = json["mvplist"] as! [String]
+    let usr = username.lowercased()
+    if permalist.contains(where: { $0.lowercased() == usr }) {
+        completion("They are on the PVP mvp list, are you sure?")
+        return
+    }
     let url = "\(gameUrl)?cn=setBanStatus&command=setBanStatus&twitchUserName=\(username)&isBanned=y"
     makeRequest(urlString: url) { _ in
         // No need to handle the response.

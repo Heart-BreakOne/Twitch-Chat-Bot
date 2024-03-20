@@ -196,5 +196,7 @@ func getUnitOfTheDay() -> String {
               return ""
           }
     let epic = arc4random_uniform(2) == 0 ? " epic " : " "
-    return " today you are level \(lvl)\(epic)\(lvl >= 20 ? spec : "") \(unitName)"
+    let soul = ["with a tank soul", "with an archer soul", "with a rogue soul", "with a warrior soul", "with a flag soul", "", "", "", "", "", "", "", "", "", "", "", "", ""].randomElement() ?? ""
+
+    return " today you are level \(lvl)\(epic)\(lvl >= 20 ? spec : "") \(unitName) \(soul)"
 }
