@@ -82,7 +82,70 @@ func unbanUser(username: String, completion: @escaping (String) -> Void) {
     }
 }
 
+//Get top 50 pvp players
+func getMvp(username: String, completion: @escaping (String) -> Void){
+    let token = UserDefaults.standard.object(forKey: "srToken")! as! String
+    let userId = token.components(separatedBy: "%")[0] + "c"
+    
+    let dV = UserDefaults.standard.object(forKey: "dataVersion")! as! String
+    let cV = UserDefaults.standard.object(forKey: "clientVersion")! as! String
+    let url = "\(gameUrl)?cn=getPvpRaidsByEvent&userId=\(userId)&isCaptain=1&gameDataVersion=\(dV)&command=getPvpRaidsByEvent&clientVersion=\(cV)&clientPlatform=WebGL"
+    makeRequest(urlString: url) { data in
+        guard let data = data else {
+            completion("Something went wrong :(")
+            return
+        }
+        
+        do {
+            if let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                let status = dict["status"] as! String
 
+                if status != "success" {
+                    completion("Something went wrong :(")
+                    return
+                }
+                
+                let data = dict["data"] as! [String: Any]
+                var stats = data["stats"] as! [[String: String]]
+                let streamer = getStreamer()
+                for (index, stat) in stats.enumerated() {
+                    guard let name = stat["twitchDisplayName"] else {
+                        continue
+                    }
+                    
+                    if name.lowercased() == streamer.lowercased() {
+                        stats.remove(at: index)
+                    }
+                }
+
+                stats.sort {
+                    guard let units1 = Int($0["unitsPlaced"] ?? "0"),
+                          let units2 = Int($1["unitsPlaced"] ?? "0") else {
+                        return false
+                    }
+                    return units1 > units2
+                }
+                
+                if let matchingStat = stats.first(where: { $0["twitchDisplayName"]?.lowercased() == username.lowercased() }) {
+                    if let index = stats.firstIndex(where: { $0 == matchingStat }) {
+                        let placedUnits = matchingStat["unitsPlaced"]!
+                        let kills = matchingStat["kills"]!
+                        let assists = matchingStat["assists"]!
+                        completion("@\(username) you are #\(index + 1) on the PVP leaderboard with \(placedUnits) placed units, \(kills) kills and \(assists) assists. Thank you for your placements DoritosChip")
+                    }
+                } else {
+
+                    completion("Couldn't find you in the top 49 :(")
+                }
+            }
+        } catch {
+            print("Error decoding data: \(error)")
+            completion("Something went wrong :(")
+        }
+        
+    }
+
+}
 func makeRequest(urlString: String, completion: @escaping ((Data?) -> Void)) {
     let token = UserDefaults.standard.object(forKey: "srToken")! as! String
     let url = URL(string: urlString)!
@@ -100,4 +163,34 @@ func makeRequest(urlString: String, completion: @escaping ((Data?) -> Void)) {
     
     task.resume()
     
+}
+
+func updateGameData() {
+    let url = "\(gameUrl)?cn=trackEvent&command=trackEvent&eventName=load_timing_init&eventData={\"Type\":\"Init\"}"
+    makeRequest(urlString: url) { data in
+        guard let data = data else {
+            print("Unable to fetch game version data.")
+            return
+        }
+        
+        do {
+            if let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                let status = dict["status"] as! String
+
+                if status != "success" {
+                    print("Unable to fetch game version data.")
+                    return
+                }
+                let info = dict["info"] as! [String: String]
+                let dataVersion = info["dataVersion"] as! String
+                let clientVersion = info["version"] as! String
+                UserDefaults.standard.set(dataVersion, forKey: "dataVersion")
+                UserDefaults.standard.set(clientVersion, forKey: "clientVersion")
+                UserDefaults.standard.synchronize()
+                print("Game data is up to date.")
+            }
+        } catch {
+            print("Error decoding data: \(error)")
+        }
+    }
 }

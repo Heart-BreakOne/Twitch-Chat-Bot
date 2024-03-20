@@ -21,6 +21,7 @@ func main() {
     }
     
     updateUserData()
+    updateGameData()
 
     let twitchChatClosure = { () -> Void in
         while true {

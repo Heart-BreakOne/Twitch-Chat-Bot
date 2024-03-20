@@ -214,6 +214,10 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         channel.send("\(user) Join the fight at https://www.streamraiders.com/t/\(getStreamer())")
     case "!log":
         break
+    case "!mvp":
+        getMvp(username: user) { result in
+            channel.send(result)
+        }
     case "!myunit":
         channel.send("@\(user)\(getUnitOfTheDay())")
     case "!rules":

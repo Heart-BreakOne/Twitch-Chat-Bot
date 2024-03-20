@@ -52,7 +52,7 @@ func updateUserData() {
 }
 
 func deleUserData() {
-    let keysToRemove = ["twitchToken", "srToken", "channelName", "botUserName", "botRealName", "botNick", "filePath"]
+    let keysToRemove = ["twitchToken", "srToken", "channelName", "botUserName", "botRealName", "botNick", "filePath", "dataVersion", "clientVersion"]
     
     for key in keysToRemove {
         UserDefaults.standard.removeObject(forKey: key)
