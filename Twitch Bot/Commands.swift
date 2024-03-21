@@ -137,7 +137,7 @@ func getCurrentStats(battleLog: [[String: Any]]) -> String{
     var wins = 0
     var losses = 0
     for b in battleLog {
-        if b["event"] as! Int == 1 {
+        if b["event"] as! String == "1" {
             let outcome = b["outcome"] as! String
             if outcome == "win" {
                 wins += 1

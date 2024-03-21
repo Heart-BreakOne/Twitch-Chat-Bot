@@ -195,7 +195,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
     case "!predict":
         channel.send("We are still collecting enough data to reliably predict battles DoritosChip")
     case "!stats":
-        if(argument == "DoritosChip") {
+        if(argument == "doritoschip") {
             channel.send("DoritosChip Winning rate is 100% DoritosChip")
         } else {
             channel.send(checkStats(from: argument))
