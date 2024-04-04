@@ -106,3 +106,54 @@ func updateJson(json: [String: Any]) {
         print("Error: Unable to update and save the JSON data - \(error)")
     }
 }
+
+
+func getCodeString(code: String) -> String {
+    let wordBankPath = "/usr/share/dict/words"
+    // Add words to skip as needed
+    let skipWords = [""]
+    
+    guard let wordBankContents = try? String(contentsOfFile: wordBankPath) else {
+        return "Error: Unable to load word bank"
+    }
+    
+    let words = wordBankContents.components(separatedBy: .newlines)
+    
+    
+    var result = ""
+    for char in code {
+        let filteredWords = words.filter { word in
+            let startsWithTransOrAnti = word.lowercased().starts(with: "trans") || word.lowercased().starts(with: "anti")
+            let endsWithIsmOrIsms = word.lowercased().hasSuffix("ism") || word.lowercased().hasSuffix("isms")
+            let notInSkipWords = !skipWords.contains(word.lowercased())
+            return word.hasPrefix(String(char)) && word.count > 6 && !startsWithTransOrAnti && !endsWithIsmOrIsms && notInSkipWords
+        }
+        if let randomWord = filteredWords.randomElement() {
+            let capitalizedWord = randomWord.capitalized
+            result += capitalizedWord + " "
+        }
+    }
+    
+    return result.trimmingCharacters(in: .whitespaces)
+}
+
+func calculateDuration(startTime: String, endTime: String) -> Double {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
+    guard let startTime = dateFormatter.date(from: startTime),
+          let endTime = dateFormatter.date(from: endTime) else {
+        fatalError("Failed to convert string to date")
+    }
+
+    return ((endTime.timeIntervalSince(startTime) / 3600) * 100).rounded() / 100
+}
+
+
+func playTTS(ttsString: String) {
+    let process = Process()
+        process.launchPath = "/usr/bin/say"
+        process.arguments = [ttsString]
+        process.launch()
+        process.waitUntilExit()
+}

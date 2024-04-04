@@ -4,7 +4,7 @@
 
 import Foundation
 
-let thxArray = ["thanks", "thank you", "thx", "thank you very much"]
+//let thxArray = ["thanks", "thank you", "thx", "thank you very much"]
 
 class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
 
@@ -78,13 +78,14 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
         if components.count == 2 {
             let user = components[0]
             let command = components[1]
-            
+            /*
             for thxWord in thxArray {
                 if command.lowercased().hasPrefix(thxWord) {
                     channel.send("@\(user), you're welcome DoritosChip")
                     return
                 }
             }
+             */
             
             if !(command.first == "!") && (command != "DoritosChip") && (command != "BOP"){
                 return
@@ -104,13 +105,17 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
             print("Argument: \(argument)")
             
             verifyCommand(channel: channel, user: user, command: commandName, argument: argument)
-            if (user == getStreamer() && (commandName == "!log")) {
+            if user == getStreamer() && (commandName == "!log") {
                 let data = command.components(separatedBy: " ")
-                if (data.count != 15) {
+                if (data.count != 4) {
                     channel.send("Can't log DoritosChip")
                     return
                 }
-                channel.send(logBattle(eventId: data[1], captainName: data[2], scale: data[3], qttPlayers: data[4], enmPlayers: data[5], power: data[6], enmPower: data[7], spell: data[8], enmSpell: data[9], unit: data[10], enmUnit: data[11], plan: data[12], enmPlan: data[13], outcome: data[14]))
+                channel.send(logBattle(eventId: data[1], captainName: data[2], outcome: data[3]))
+            }
+            else if commandName == "!levelup" || commandName == "!level" {
+                let data = command.components(separatedBy: " ")
+                channel.send(calculateLevel(data: data, user: user))
             }
         }
     }
@@ -214,6 +219,10 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         channel.send("\(user) Join the fight at https://www.streamraiders.com/t/\(getStreamer())")
     case "!log":
         break
+    case "!levelup":
+        break
+    case "!level":
+        break
     case "!mvp":
         getMvp(username: user) { result in
             channel.send(result)
@@ -225,6 +234,19 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         channel.send("@\(streamer), a chatter wants to know about a captain that is on a \(argument) chest battle, because you are lazy I can't do it myself, do it for them.")
     case "!rules":
         channel.send("@\(user) the rules are very simple: No tank souls, no spies, no erasing tactical markers and follow the markers if there are any.")
+    case "!setmode":
+        let streamer = getStreamer()
+        if streamer == user {
+            channel.send(setGameMode(mode: argument))
+        }
+    case "!dungeonleaderboard":
+        getDungeonLeaderboard() { leaderBoard in
+            channel.send(leaderBoard[0])
+            if leaderBoard[1] != "" {
+                channel.send(leaderBoard[1])
+            }
+        }
+        
     default:
         channel.send("DoritosChip \(command) is not a command yet DoritosChip")
     }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Dispatch
 
 func main() {
     print("Press ENTER to continue.\n\"clear\" to delete your data.\n\"exit\" to close the application.")
@@ -32,8 +33,15 @@ func main() {
             twitchChat = nil
         }
     }
+    let backgroundQueue = DispatchQueue(label: "com.example.backgroundQueue", qos: .background)
+    backgroundQueue.async {
+        while true {
+            checkMidPatch()
+        }
+    }
 
     twitchChatClosure()
+    
     /*let _ = TwitchChat()
     
     // Continuous loop to keep the program running.

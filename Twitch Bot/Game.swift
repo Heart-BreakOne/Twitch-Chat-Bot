@@ -149,10 +149,115 @@ func getMvp(username: String, completion: @escaping (String) -> Void){
             print("Error decoding data: \(error)")
             completion("Something went wrong :(")
         }
-        
     }
-
 }
+
+func getDungeonLeaderboard( completion: @escaping ([String]) -> Void) {
+    let token = UserDefaults.standard.object(forKey: "srToken")! as! String
+    let userId = token.components(separatedBy: "%")[0] + "c"
+    
+    let dV = UserDefaults.standard.object(forKey: "dataVersion")! as! String
+    let cV = UserDefaults.standard.object(forKey: "clientVersion")! as! String
+    let urlString = "\(gameUrl)?cn=getDungeonLeaderboard&userId=\(userId)&isCaptain=1&gameDataVersion=\(dV)&command=getDungeonLeaderboard&clientVersion=\(cV)&clientPlatform=WebGL"
+    makeRequest(urlString: urlString) { data in
+        guard let data = data else {
+            completion(["Something went wrong :(", ""])
+            return
+        }
+        do {
+            if let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                let status = dict["status"] as! String
+                
+                if status != "success" {
+                    completion(["Something went wrong :(", ""])
+                    return
+                }
+                
+                let leaderboard = dict["data"] as! [String: Any]
+                let top10 = leaderboard["globalRuns"] as! [[String: Any]]
+                var leaderboardString1 = "Leaderboard for latest dungeon is:  "
+                var leaderboardString2 = ""
+                
+                let sortedCaptains = top10.sorted { (cap1, cap2) -> Bool in
+                    guard let startTime1 = cap1["startTime"] as? String,
+                          let endTime1 = cap1["endTime"] as? String,
+                          let startTime2 = cap2["startTime"] as? String,
+                          let endTime2 = cap2["endTime"] as? String,
+                          let completedLevels1 = cap1["completedLevels"] as? String,
+                          let completedLevels2 = cap2["completedLevels"] as? String else {
+                        return false
+                    }
+                    
+                    let duration1 = calculateDuration(startTime: startTime1, endTime: endTime1)
+                    let duration2 = calculateDuration(startTime: startTime2, endTime: endTime2)
+                    
+                    if completedLevels1 == completedLevels2 {
+                        return duration1 < duration2
+                    } else {
+                        return false
+                    }
+                }
+                
+                // Do the first 5
+                for (index, cap) in sortedCaptains.prefix(5).enumerated() {
+                    let index = index + 1
+                    let capName = cap["twitchDisplayName"] as! String
+                    let completedLevels = cap["completedLevels"] as! String
+                    let startTime = cap["startTime"] as! String
+                    let endTime = cap["endTime"] as! String
+                    let duration = calculateDuration(startTime: startTime, endTime: endTime)
+                    let phrase = "\(index) - \(capName) - Completed \(completedLevels) levels in \(duration) hours.  "
+                    leaderboardString1 += phrase
+                }
+                // Do that last 10
+                for (index, cap) in sortedCaptains.suffix(5).enumerated() {
+                    let index = index + 5 + 1
+                    let capName = cap["twitchDisplayName"] as! String
+                    let completedLevels = cap["completedLevels"] as! String
+                    let startTime = cap["startTime"] as! String
+                    let endTime = cap["endTime"] as! String
+                    let duration = calculateDuration(startTime: startTime, endTime: endTime)
+                    let phrase = "\(index) - \(capName) - Completed \(completedLevels) levels in \(duration) hours.  "
+                    leaderboardString2 += phrase
+                }
+                completion([leaderboardString1, leaderboardString2])
+            }
+        } catch {
+            completion(["Something went wrong :(", ""])
+            return
+        }
+    }
+    return
+}
+
+
+func checkMidPatch() {
+    makeRequest(urlString: gameUrl) { data in
+        guard let data = data else {
+            print("Unable to fetch game version data.")
+            return
+        }
+        
+        do {
+            if let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+
+                let info = dict["info"] as! [String: String]
+                
+                let dataPath = info["dataPath"]!
+                var localDataPath = UserDefaults.standard.string(forKey: "dataPath")
+                if dataPath != localDataPath {
+                    updateGameData()
+                    playTTS(ttsString: "Brace yourselves, a midpatch is coming")
+                }
+            }
+        } catch {
+            print("Error decoding data: \(error)")
+        }
+    }
+    sleep(5)
+}
+
+
 func makeRequest(urlString: String, completion: @escaping ((Data?) -> Void)) {
     let token = UserDefaults.standard.object(forKey: "srToken")! as! String
     let url = URL(string: urlString)!
@@ -191,8 +296,10 @@ func updateGameData() {
                 let info = dict["info"] as! [String: String]
                 let dataVersion = info["dataVersion"] as! String
                 let clientVersion = info["version"] as! String
+                let dataPath = info["dataPath"] as! String
                 UserDefaults.standard.set(dataVersion, forKey: "dataVersion")
                 UserDefaults.standard.set(clientVersion, forKey: "clientVersion")
+                UserDefaults.standard.set(dataPath, forKey: "dataPath")
                 UserDefaults.standard.synchronize()
                 print("Game data is up to date.")
             }
