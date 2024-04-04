@@ -218,6 +218,55 @@ func getDoritos() -> String {
     return doritosChip
 }
 
+
+struct SoulData {
+    let username: String
+    let qtt: Int
+    let lastRedeem: String
+}
+
+
+func redeemTankSoul(user: String) -> String {
+    var json = getJson()
+    var tankSouls = json["tanksoul"] as! [[String: Any]]
+    let currentTime = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    var foundUser = false
+    
+    for (index, soul) in tankSouls.enumerated() {
+        let userName = soul["username"] as! String
+        
+        if user.lowercased() == userName.lowercased() {
+            foundUser = true
+            let lastRedeemString = soul["lastRedeem"] as! String
+            let lastRedeem = dateFormatter.date(from: lastRedeemString)!
+            let qtt = soul["qtt"] as! Int
+            
+            if let elapsedHours = Calendar.current.dateComponents([.hour], from: lastRedeem, to: currentTime).hour, elapsedHours >= 24 {
+                let newQtt = qtt + 1
+                tankSouls[index]["qtt"] = newQtt
+                tankSouls[index]["lastRedeem"] = dateFormatter.string(from: currentTime)
+                updateJson(json: json)
+                return "\(user), you now have \(newQtt) tank souls DoritosChip."
+            } else {
+                return "Sorry \(user), you already got your tank soul for the day. You have \(qtt) souls :p"
+            }
+        }
+    }
+    
+    if !foundUser {
+        let newSoul = ["username": user, "qtt": 1, "lastRedeem": dateFormatter.string(from: currentTime)] as [String : Any]
+        tankSouls.append(newSoul)
+        json["tanksoul"] = tankSouls
+        updateJson(json: json)
+        return "\(user), you now have 1 tank soul DoritosChip"
+    }
+}
+
+
+
+
 func getUnitOfTheDay() -> String {
     let lvl = Int(arc4random_uniform(30)) + 1
     guard let unitsList = getJson()["unitsList"] as? [[String: [String]]],
@@ -240,7 +289,7 @@ struct CostTable {
     let scroll: Int
 }
 
-func calculateLevel(data: [String], user: String) -> String {
+func calculateLevel(data: [String], commandName: String, user: String) -> String {
     
     let regularCost: [CostTable] = [
         CostTable(lower: 1, high: 2, gold: 25, scroll: 15),
@@ -275,6 +324,7 @@ func calculateLevel(data: [String], user: String) -> String {
     ]
 
     let legendaryCost: [CostTable] = [
+        CostTable(lower: 1, high: 2, gold: 50, scroll: 10),
         CostTable(lower: 2, high: 3, gold: 70, scroll: 10),
         CostTable(lower: 3, high: 4, gold: 100, scroll: 10),
         CostTable(lower: 4, high: 5, gold: 200, scroll: 10),
@@ -305,66 +355,141 @@ func calculateLevel(data: [String], user: String) -> String {
         CostTable(lower: 29, high: 30, gold: 2000, scroll: 20)
     ]
     
-    do {
-        var startingLevel = 0
-        var endingLevel = 0
-        var isLegendary = false
-        if data.count  <= 1 {
-            throw NSError(domain: "", code: 0, userInfo: nil)
-        }
-        if data[1] == "legendary" {
-            isLegendary = true
-        }
-        
-        if isLegendary {
-            if let starting = Int(data[2]), let ending = Int(data[3]) {
-                startingLevel = starting
-                endingLevel = ending
-            } else {
+    let capRegularCost: [CostTable] = [
+            CostTable(lower: 1, high: 2, gold: 6, scroll: 7),
+            CostTable(lower: 2, high: 3, gold: 7, scroll: 8),
+            CostTable(lower: 3, high: 4, gold: 8, scroll: 9),
+            CostTable(lower: 4, high: 5, gold: 9, scroll: 10),
+            CostTable(lower: 5, high: 6, gold: 10, scroll: 11),
+            CostTable(lower: 6, high: 7, gold: 15, scroll: 12),
+            CostTable(lower: 7, high: 8, gold: 20, scroll: 13),
+            CostTable(lower: 8, high: 9, gold: 25, scroll: 14),
+            CostTable(lower: 9, high: 10, gold: 30, scroll: 15),
+            CostTable(lower: 10, high: 11, gold: 35, scroll: 16),
+            CostTable(lower: 11, high: 12, gold: 40, scroll: 17),
+            CostTable(lower: 12, high: 13, gold: 45, scroll: 18),
+            CostTable(lower: 13, high: 14, gold: 50, scroll: 19),
+            CostTable(lower: 14, high: 15, gold: 55, scroll: 20),
+            CostTable(lower: 15, high: 16, gold: 60, scroll: 22),
+            CostTable(lower: 16, high: 17, gold: 65, scroll: 24),
+            CostTable(lower: 17, high: 18, gold: 70, scroll: 26),
+            CostTable(lower: 18, high: 19, gold: 75, scroll: 28),
+            CostTable(lower: 19, high: 20, gold: 100, scroll: 30),
+            CostTable(lower: 20, high: 21, gold: 120, scroll: 40),
+            CostTable(lower: 21, high: 22, gold: 140, scroll: 60),
+            CostTable(lower: 22, high: 23, gold: 160, scroll: 60),
+            CostTable(lower: 23, high: 24, gold: 180, scroll: 70),
+            CostTable(lower: 24, high: 25, gold: 200, scroll: 90),
+            CostTable(lower: 25, high: 26, gold: 220, scroll: 90),
+            CostTable(lower: 26, high: 27, gold: 240, scroll: 100),
+            CostTable(lower: 27, high: 28, gold: 260, scroll: 115),
+            CostTable(lower: 28, high: 29, gold: 280, scroll: 130),
+            CostTable(lower: 29, high: 30, gold: 300, scroll: 150)
+        ]
+
+        let capLegendaryCost: [CostTable] = [
+            CostTable(lower: 1, high: 2, gold: 12, scroll: 10),
+            CostTable(lower: 2, high: 3, gold: 14, scroll: 10),
+            CostTable(lower: 3, high: 4, gold: 16, scroll: 10),
+            CostTable(lower: 4, high: 5, gold: 18, scroll: 10),
+            CostTable(lower: 5, high: 6, gold: 20, scroll: 10),
+            CostTable(lower: 6, high: 7, gold: 30, scroll: 10),
+            CostTable(lower: 7, high: 8, gold: 40, scroll: 10),
+            CostTable(lower: 8, high: 9, gold: 50, scroll: 10),
+            CostTable(lower: 9, high: 10, gold: 60, scroll: 10),
+            CostTable(lower: 10, high: 11, gold: 70, scroll: 15),
+            CostTable(lower: 11, high: 12, gold: 80, scroll: 15),
+            CostTable(lower: 12, high: 13, gold: 90, scroll: 15),
+            CostTable(lower: 13, high: 14, gold: 100, scroll: 15),
+            CostTable(lower: 14, high: 15, gold: 110, scroll: 15),
+            CostTable(lower: 15, high: 16, gold: 120, scroll: 15),
+            CostTable(lower: 16, high: 17, gold: 130, scroll: 15),
+            CostTable(lower: 17, high: 18, gold: 140, scroll: 15),
+            CostTable(lower: 18, high: 19, gold: 150, scroll: 15),
+            CostTable(lower: 19, high: 20, gold: 200, scroll: 15),
+            CostTable(lower: 20, high: 21, gold: 220, scroll: 20),
+            CostTable(lower: 21, high: 22, gold: 240, scroll: 20),
+            CostTable(lower: 22, high: 23, gold: 260, scroll: 20),
+            CostTable(lower: 23, high: 24, gold: 280, scroll: 20),
+            CostTable(lower: 24, high: 25, gold: 300, scroll: 20),
+            CostTable(lower: 25, high: 26, gold: 320, scroll: 20),
+            CostTable(lower: 26, high: 27, gold: 340, scroll: 20),
+            CostTable(lower: 27, high: 28, gold: 360, scroll: 20),
+            CostTable(lower: 28, high: 29, gold: 380, scroll: 20),
+            CostTable(lower: 29, high: 30, gold: 400, scroll: 20)
+        ]
+    
+    
+        do {
+            var startingLevel = 0
+            var endingLevel = 0
+            var isLegendary = false
+            if data.count  <= 1 {
                 throw NSError(domain: "", code: 0, userInfo: nil)
             }
-        } else {
-            if let starting = Int(data[1]), let ending = Int(data[2]) {
-                startingLevel = starting
-                endingLevel = ending
-            } else {
-                throw NSError(domain: "", code: 0, userInfo: nil)
+            if data[1] == "legendary" {
+                isLegendary = true
             }
-        }
-        
-        if startingLevel >= endingLevel || startingLevel <= 0 || endingLevel > 30{
-            return "@\(user) Those are not valid levels :p Command usage is: !levelup starting_level ending_level or !levelup legendary starting_level ending_level. E.g: !levelup 3 17"
-        } else if endingLevel == 30 {
-            return "@\(user) Can't go past level 30 DoritosChip"
-        }
-        
-        
-        var coins = 0
-        var scrolls = 0
-        
-        if isLegendary {
-            for level in startingLevel..<endingLevel {
-                if let cost = legendaryCost.first(where: { $0.lower <= level && $0.high > level }) {
-                    coins += cost.gold
-                    scrolls += cost.scroll
+            
+            if isLegendary {
+                if let starting = Int(data[2]), let ending = Int(data[3]) {
+                    startingLevel = starting
+                    endingLevel = ending
+                } else {
+                    throw NSError(domain: "", code: 0, userInfo: nil)
+                }
+            } else {
+                if let starting = Int(data[1]), let ending = Int(data[2]) {
+                    startingLevel = starting
+                    endingLevel = ending
                 } else {
                     throw NSError(domain: "", code: 0, userInfo: nil)
                 }
             }
-        } else {
-            for level in startingLevel..<endingLevel {
-                if let cost = regularCost.first(where: { $0.lower <= level && $0.high > level }) {
-                    coins += cost.gold
-                    scrolls += cost.scroll
-                } else {
-                    throw NSError(domain: "", code: 0, userInfo: nil)
+            
+            if startingLevel >= endingLevel || startingLevel <= 0 || endingLevel > 30{
+                return "@\(user) Those are not valid levels :p Command usage is: !levelup starting_level ending_level or !levelup legendary starting_level ending_level. E.g: !levelup 3 17"
+            } else if endingLevel == 30 {
+                return "@\(user) Can't go past level 30 DoritosChip"
+            }
+            
+            
+            var coins = 0
+            var scrolls = 0
+            // Determine which table to use
+            var lTable: [CostTable] = []
+            var rTable: [CostTable] = []
+            if commandName.contains("captain") {
+                lTable = capLegendaryCost
+                rTable = capRegularCost
+            } else {
+                lTable = legendaryCost
+                rTable = regularCost
+            }
+            
+            if isLegendary {
+                for level in startingLevel..<endingLevel {
+                    if let cost = lTable.first(where: { $0.lower <= level && $0.high > level }) {
+                        coins += cost.gold
+                        scrolls += cost.scroll
+                    } else {
+                        throw NSError(domain: "", code: 0, userInfo: nil)
+                    }
+                }
+            } else {
+                for level in startingLevel..<endingLevel {
+                    if let cost = rTable.first(where: { $0.lower <= level && $0.high > level }) {
+                        coins += cost.gold
+                        scrolls += cost.scroll
+                    } else {
+                        throw NSError(domain: "", code: 0, userInfo: nil)
+                    }
                 }
             }
+            
+            return "@\(user) level up cost will be \(coins) coins and \(scrolls) scrolls"
+            
+        } catch {
+            return "@\(user) command usage is: !levelup starting_level ending_level or !levelup legendary starting_level ending_level. E.g: !levelup 3 17"
         }
-        
-        return "@\(user) level up cost will be \(coins) coins and \(scrolls) scrolls"
-        
-    } catch {
-        return "@\(user) command usage is: !levelup starting_level ending_level or !levelup legendary starting_level ending_level. E.g: !levelup 3 17"
     }
-}

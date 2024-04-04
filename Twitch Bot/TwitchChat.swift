@@ -113,9 +113,9 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
                 }
                 channel.send(logBattle(eventId: data[1], captainName: data[2], outcome: data[3]))
             }
-            else if commandName == "!levelup" || commandName == "!level" {
+            else if commandName == "!levelup" || commandName == "!level" || commandName == "!levelupcaptain" || commandName == "!levelcaptain" {
                 let data = command.components(separatedBy: " ")
-                channel.send(calculateLevel(data: data, user: user))
+                channel.send(calculateLevel(data: data, commandName: commandName, user: user))
             }
         }
     }
@@ -191,37 +191,29 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
                 channel.send(updateList(username: argument, listId: "watchlist"))
             }
         }
-    case "!commands":
-        channel.send(sendCommands())
-    case "!command":
+    case "!commands", "!command":
         channel.send(sendCommands())
     case "!ping":
         channel.send("pong")
-    case "!predict":
-        channel.send("We are still collecting enough data to reliably predict battles DoritosChip")
+    //case "!predict":
+       // channel.send("We are still collecting enough data to reliably predict battles DoritosChip")
     case "!stats":
         if(argument == "doritoschip") {
             channel.send("DoritosChip Winning rate is 100% DoritosChip")
         } else {
             channel.send(checkStats(from: argument))
         }
-    case "!streamraiders":
+    case "!streamraiders", "!join", "!sr":
         channel.send("\(user) Join the fight at https://www.streamraiders.com/t/\(getStreamer())")
     case "!lurk":
         channel.send("DoritosChip \(user) enjoy lurking DoritosChip")
     case "!unlurk":
         channel.send("DoritosChip \(user), welcome back to Streamlandia! DoritosChip")
-    case "doritoschip":
+    case "doritoschip", "!doritoschip":
         channel.send(getDoritos())
-    case "!doritoschip":
-        channel.send(getDoritos())
-    case "!join":
-        channel.send("\(user) Join the fight at https://www.streamraiders.com/t/\(getStreamer())")
     case "!log":
         break
-    case "!levelup":
-        break
-    case "!level":
+    case "!levelup", "!level", "!levelupcaptain", "!levelcaptain":
         break
     case "!mvp":
         getMvp(username: user) { result in
@@ -246,6 +238,8 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
                 channel.send(leaderBoard[1])
             }
         }
+    case "!tanksoul":
+        channel.send(redeemTankSoul(user: user))
         
     default:
         channel.send("DoritosChip \(command) is not a command yet DoritosChip")
