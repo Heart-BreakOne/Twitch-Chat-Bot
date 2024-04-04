@@ -48,6 +48,10 @@ func sendStreak() -> String {
 
 // Set battle code
 func setCode(code: String) -> String {
+    var code = code
+    if code == "" {
+        code = "none"
+    }
     var json = getJson()
     json["code"] = code
     updateJson(json: json)
@@ -77,7 +81,7 @@ func sendCode() -> String {
             return "Code is: \(code). This captain sucks at dungeons, I'm don't know why they coded it."
         } else if mode == "clash" {
             let string = "The code is among the clash instructions: No spies as they use 100% power and prevent spell placement. No tanks souls. Follow the markers. No spies, no tank souls. No spies, no tank souls."
-            let rangeOfAnd = string.range(of: "and")!
+            let rangeOfAnd = string.range(of: "power")!
             
             var randomIndex = string.index(rangeOfAnd.upperBound, offsetBy: Int.random(in: 0..<(string.distance(from: rangeOfAnd.upperBound, to: string.endIndex))))
             
