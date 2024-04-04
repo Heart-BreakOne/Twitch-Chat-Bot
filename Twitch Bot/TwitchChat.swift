@@ -7,7 +7,7 @@ import Foundation
 //let thxArray = ["thanks", "thank you", "thx", "thank you very much"]
 
 class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
-
+    
     let session = URLSession(configuration: .default)
     var user: IRCUser
     var server: IRCServer?
@@ -17,7 +17,7 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
     var chName: String
     
     init() {
-
+        
         // Fetch Twitch data
         let (token, fetchedChName, bot, real, nick) = getTwitchData()
         self.chName = fetchedChName
@@ -53,17 +53,17 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
     }
     
     func terminate() {
-            // Send QUIT message to IRC server
-            server?.send("QUIT :Shutting down")
-            
-            // Clear delegates to avoid retain cycles
-            server?.delegate = nil
-            channel?.delegate = nil
-            
-            // Release resources or perform any additional cleanup tasks if needed
-
-        }
-
+        // Send QUIT message to IRC server
+        server?.send("QUIT :Shutting down")
+        
+        // Clear delegates to avoid retain cycles
+        server?.delegate = nil
+        channel?.delegate = nil
+        
+        // Release resources or perform any additional cleanup tasks if needed
+        
+    }
+    
     
     // Server messages containing user lists, connection confirmation
     func didRecieveMessage(_ server: IRCServer, message: String) {
@@ -79,12 +79,12 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
             let user = components[0]
             let command = components[1]
             /*
-            for thxWord in thxArray {
-                if command.lowercased().hasPrefix(thxWord) {
-                    channel.send("@\(user), you're welcome DoritosChip")
-                    return
-                }
-            }
+             for thxWord in thxArray {
+             if command.lowercased().hasPrefix(thxWord) {
+             channel.send("@\(user), you're welcome DoritosChip")
+             return
+             }
+             }
              */
             
             if !(command.first == "!") && (command != "DoritosChip") && (command != "BOP"){
@@ -195,8 +195,8 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         channel.send(sendCommands())
     case "!ping":
         channel.send("pong")
-    //case "!predict":
-       // channel.send("We are still collecting enough data to reliably predict battles DoritosChip")
+        //case "!predict":
+        // channel.send("We are still collecting enough data to reliably predict battles DoritosChip")
     case "!stats":
         if(argument == "doritoschip") {
             channel.send("DoritosChip Winning rate is 100% DoritosChip")

@@ -322,7 +322,7 @@ func calculateLevel(data: [String], commandName: String, user: String) -> String
         CostTable(l: 28, h: 29, g: 1000, s: 380),
         CostTable(l: 29, h: 30, g: 1200, s: 400)
     ]
-
+    
     let legendaryCost: [CostTable] = [
         CostTable(l: 1, h: 2, g: 50, s: 10),
         CostTable(l: 2, h: 3, g: 70, s: 10),
@@ -356,140 +356,137 @@ func calculateLevel(data: [String], commandName: String, user: String) -> String
     ]
     
     let capRegularCost: [CostTable] = [
-            CostTable(l: 1, h: 2, g: 6, s: 7),
-            CostTable(l: 2, h: 3, g: 7, s: 8),
-            CostTable(l: 3, h: 4, g: 8, s: 9),
-            CostTable(l: 4, h: 5, g: 9, s: 10),
-            CostTable(l: 5, h: 6, g: 10, s: 11),
-            CostTable(l: 6, h: 7, g: 15, s: 12),
-            CostTable(l: 7, h: 8, g: 20, s: 13),
-            CostTable(l: 8, h: 9, g: 25, s: 14),
-            CostTable(l: 9, h: 10, g: 30, s: 15),
-            CostTable(l: 10, h: 11, g: 35, s: 16),
-            CostTable(l: 11, h: 12, g: 40, s: 17),
-            CostTable(l: 12, h: 13, g: 45, s: 18),
-            CostTable(l: 13, h: 14, g: 50, s: 19),
-            CostTable(l: 14, h: 15, g: 55, s: 20),
-            CostTable(l: 15, h: 16, g: 60, s: 22),
-            CostTable(l: 16, h: 17, g: 65, s: 24),
-            CostTable(l: 17, h: 18, g: 70, s: 26),
-            CostTable(l: 18, h: 19, g: 75, s: 28),
-            CostTable(l: 19, h: 20, g: 100, s: 30),
-            CostTable(l: 20, h: 21, g: 120, s: 40),
-            CostTable(l: 21, h: 22, g: 140, s: 60),
-            CostTable(l: 22, h: 23, g: 160, s: 60),
-            CostTable(l: 23, h: 24, g: 180, s: 70),
-            CostTable(l: 24, h: 25, g: 200, s: 90),
-            CostTable(l: 25, h: 26, g: 220, s: 90),
-            CostTable(l: 26, h: 27, g: 240, s: 100),
-            CostTable(l: 27, h: 28, g: 260, s: 115),
-            CostTable(l: 28, h: 29, g: 280, s: 130),
-            CostTable(l: 29, h: 30, g: 300, s: 150)
-        ]
-
-        let capLegendaryCost: [CostTable] = [
-            CostTable(l: 1, h: 2, g: 12, s: 10),
-            CostTable(l: 2, h: 3, g: 14, s: 10),
-            CostTable(l: 3, h: 4, g: 16, s: 10),
-            CostTable(l: 4, h: 5, g: 18, s: 10),
-            CostTable(l: 5, h: 6, g: 20, s: 10),
-            CostTable(l: 6, h: 7, g: 30, s: 10),
-            CostTable(l: 7, h: 8, g: 40, s: 10),
-            CostTable(l: 8, h: 9, g: 50, s: 10),
-            CostTable(l: 9, h: 10, g: 60, s: 10),
-            CostTable(l: 10, h: 11, g: 70, s: 15),
-            CostTable(l: 11, h: 12, g: 80, s: 15),
-            CostTable(l: 12, h: 13, g: 90, s: 15),
-            CostTable(l: 13, h: 14, g: 100, s: 15),
-            CostTable(l: 14, h: 15, g: 110, s: 15),
-            CostTable(l: 15, h: 16, g: 120, s: 15),
-            CostTable(l: 16, h: 17, g: 130, s: 15),
-            CostTable(l: 17, h: 18, g: 140, s: 15),
-            CostTable(l: 18, h: 19, g: 150, s: 15),
-            CostTable(l: 19, h: 20, g: 200, s: 15),
-            CostTable(l: 20, h: 21, g: 220, s: 20),
-            CostTable(l: 21, h: 22, g: 240, s: 20),
-            CostTable(l: 22, h: 23, g: 260, s: 20),
-            CostTable(l: 23, h: 24, g: 280, s: 20),
-            CostTable(l: 24, h: 25, g: 300, s: 20),
-            CostTable(l: 25, h: 26, g: 320, s: 20),
-            CostTable(l: 26, h: 27, g: 340, s: 20),
-            CostTable(l: 27, h: 28, g: 360, s: 20),
-            CostTable(l: 28, h: 29, g: 380, s: 20),
-            CostTable(l: 29, h: 30, g: 400, s: 20)
-        ]
+        CostTable(l: 1, h: 2, g: 6, s: 7),
+        CostTable(l: 2, h: 3, g: 7, s: 8),
+        CostTable(l: 3, h: 4, g: 8, s: 9),
+        CostTable(l: 4, h: 5, g: 9, s: 10),
+        CostTable(l: 5, h: 6, g: 10, s: 11),
+        CostTable(l: 6, h: 7, g: 15, s: 12),
+        CostTable(l: 7, h: 8, g: 20, s: 13),
+        CostTable(l: 8, h: 9, g: 25, s: 14),
+        CostTable(l: 9, h: 10, g: 30, s: 15),
+        CostTable(l: 10, h: 11, g: 35, s: 16),
+        CostTable(l: 11, h: 12, g: 40, s: 17),
+        CostTable(l: 12, h: 13, g: 45, s: 18),
+        CostTable(l: 13, h: 14, g: 50, s: 19),
+        CostTable(l: 14, h: 15, g: 55, s: 20),
+        CostTable(l: 15, h: 16, g: 60, s: 22),
+        CostTable(l: 16, h: 17, g: 65, s: 24),
+        CostTable(l: 17, h: 18, g: 70, s: 26),
+        CostTable(l: 18, h: 19, g: 75, s: 28),
+        CostTable(l: 19, h: 20, g: 100, s: 30),
+        CostTable(l: 20, h: 21, g: 120, s: 40),
+        CostTable(l: 21, h: 22, g: 140, s: 60),
+        CostTable(l: 22, h: 23, g: 160, s: 60),
+        CostTable(l: 23, h: 24, g: 180, s: 70),
+        CostTable(l: 24, h: 25, g: 200, s: 90),
+        CostTable(l: 25, h: 26, g: 220, s: 90),
+        CostTable(l: 26, h: 27, g: 240, s: 100),
+        CostTable(l: 27, h: 28, g: 260, s: 115),
+        CostTable(l: 28, h: 29, g: 280, s: 130),
+        CostTable(l: 29, h: 30, g: 300, s: 150)
+    ]
+    
+    let capLegendaryCost: [CostTable] = [
+        CostTable(l: 1, h: 2, g: 12, s: 10),
+        CostTable(l: 2, h: 3, g: 14, s: 10),
+        CostTable(l: 3, h: 4, g: 16, s: 10),
+        CostTable(l: 4, h: 5, g: 18, s: 10),
+        CostTable(l: 5, h: 6, g: 20, s: 10),
+        CostTable(l: 6, h: 7, g: 30, s: 10),
+        CostTable(l: 7, h: 8, g: 40, s: 10),
+        CostTable(l: 8, h: 9, g: 50, s: 10),
+        CostTable(l: 9, h: 10, g: 60, s: 10),
+        CostTable(l: 10, h: 11, g: 70, s: 15),
+        CostTable(l: 11, h: 12, g: 80, s: 15),
+        CostTable(l: 12, h: 13, g: 90, s: 15),
+        CostTable(l: 13, h: 14, g: 100, s: 15),
+        CostTable(l: 14, h: 15, g: 110, s: 15),
+        CostTable(l: 15, h: 16, g: 120, s: 15),
+        CostTable(l: 16, h: 17, g: 130, s: 15),
+        CostTable(l: 17, h: 18, g: 140, s: 15),
+        CostTable(l: 18, h: 19, g: 150, s: 15),
+        CostTable(l: 19, h: 20, g: 200, s: 15),
+        CostTable(l: 20, h: 21, g: 220, s: 20),
+        CostTable(l: 21, h: 22, g: 240, s: 20),
+        CostTable(l: 22, h: 23, g: 260, s: 20),
+        CostTable(l: 23, h: 24, g: 280, s: 20),
+        CostTable(l: 24, h: 25, g: 300, s: 20),
+        CostTable(l: 25, h: 26, g: 320, s: 20),
+        CostTable(l: 26, h: 27, g: 340, s: 20),
+        CostTable(l: 27, h: 28, g: 360, s: 20),
+        CostTable(l: 28, h: 29, g: 380, s: 20),
+        CostTable(l: 29, h: 30, g: 400, s: 20)
+    ]
     
     
-        do {
-            var startingLevel = 0
-            var endingLevel = 0
-            var isLegendary = false
-            if data.count  <= 1 {
+    do {
+        var startingLevel = 0
+        var endingLevel = 0
+        var isLegendary = false
+        if data.count  <= 1 {
+            throw NSError(domain: "", code: 0, userInfo: nil)
+        }
+        if data[1] == "legendary" {
+            isLegendary = true
+        }
+        
+        if isLegendary {
+            if let starting = Int(data[2]), let ending = Int(data[3]) {
+                startingLevel = starting
+                endingLevel = ending
+            } else {
                 throw NSError(domain: "", code: 0, userInfo: nil)
             }
-            if data[1] == "legendary" {
-                isLegendary = true
-            }
-            
-            if isLegendary {
-                if let starting = Int(data[2]), let ending = Int(data[3]) {
-                    startingLevel = starting
-                    endingLevel = ending
-                } else {
-                    throw NSError(domain: "", code: 0, userInfo: nil)
-                }
+        } else {
+            if let starting = Int(data[1]), let ending = Int(data[2]) {
+                startingLevel = starting
+                endingLevel = ending
             } else {
-                if let starting = Int(data[1]), let ending = Int(data[2]) {
-                    startingLevel = starting
-                    endingLevel = ending
-                } else {
-                    throw NSError(domain: "", code: 0, userInfo: nil)
-                }
+                throw NSError(domain: "", code: 0, userInfo: nil)
             }
-            
-            if startingLevel >= endingLevel || startingLevel <= 0 || endingLevel > 30{
-                return "@\(user) Those are not valid levels :p Command usage is: !levelup/!levelupcaptain starting_level ending_level or !levelup/!levelupcaptain legendary starting_level ending_level. E.g: !levelup 3 17"
-            } else if endingLevel == 30 {
-                return "@\(user) Can't go past level 30 DoritosChip"
-            }
-            
-            
-            var coins = 0
-            var scrolls = 0
-            // Determine which table to use
-            var lTable: [CostTable] = []
-            var rTable: [CostTable] = []
-            if commandName.contains("captain") {
-                lTable = capLegendaryCost
-                rTable = capRegularCost
-            } else {
-                lTable = legendaryCost
-                rTable = regularCost
-            }
-            
-            if isLegendary {
-                for level in startingLevel..<endingLevel {
-                    if let cost = lTable.first(where: { $0.l <= level && $0.h > level }) {
-                        coins += cost.g
-                        scrolls += cost.s
-                    } else {
-                        throw NSError(domain: "", code: 0, userInfo: nil)
-                    }
-                }
-            } else {
-                for level in startingLevel..<endingLevel {
-                    if let cost = rTable.first(where: { $0.l <= level && $0.h > level }) {
-                        coins += cost.g
-                        scrolls += cost.s
-                    } else {
-                        throw NSError(domain: "", code: 0, userInfo: nil)
-                    }
-                }
-            }
-            
-            return "@\(user) level up cost will be \(coins) coins and \(scrolls) scrolls"
-            
-        } catch {
-            return "@\(user) command usage is: !levelup/!levelupcaptain starting_level ending_level or !levelup/!levelupcaptain legendary starting_level ending_level. E.g: !levelup 3 17"
         }
+        
+        if startingLevel >= endingLevel || startingLevel <= 0 || endingLevel > 30{
+            return "@\(user) Those are not valid levels :p Command usage is: !levelup/!levelupcaptain starting_level ending_level or !levelup/!levelupcaptain legendary starting_level ending_level. E.g: !levelup 3 17"
+        }
+        
+        var coins = 0
+        var scrolls = 0
+        // Determine which table to use
+        var lTable: [CostTable] = []
+        var rTable: [CostTable] = []
+        if commandName.contains("captain") {
+            lTable = capLegendaryCost
+            rTable = capRegularCost
+        } else {
+            lTable = legendaryCost
+            rTable = regularCost
+        }
+        
+        if isLegendary {
+            for level in startingLevel..<endingLevel {
+                if let cost = lTable.first(where: { $0.l <= level && $0.h > level }) {
+                    coins += cost.g
+                    scrolls += cost.s
+                } else {
+                    throw NSError(domain: "", code: 0, userInfo: nil)
+                }
+            }
+        } else {
+            for level in startingLevel..<endingLevel {
+                if let cost = rTable.first(where: { $0.l <= level && $0.h > level }) {
+                    coins += cost.g
+                    scrolls += cost.s
+                } else {
+                    throw NSError(domain: "", code: 0, userInfo: nil)
+                }
+            }
+        }
+        
+        return "@\(user) level up cost will be \(coins) coins and \(scrolls) scrolls"
+        
+    } catch {
+        return "@\(user) command usage is: !levelup/!levelupcaptain starting_level ending_level or !levelup/!levelupcaptain legendary starting_level ending_level. E.g: !levelup 3 17"
     }
+}
