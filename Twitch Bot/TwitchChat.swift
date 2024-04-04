@@ -239,6 +239,11 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
                 channel.send(leaderBoard[1])
             }
         }
+    case "!power":
+        let streamer = getStreamer()
+        if streamer == user {
+            channel.send(calculatePower(power: argument))
+        }
     case "!tanksoul":
         channel.send(redeemTankSoul(user: user))
     default:

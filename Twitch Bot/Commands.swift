@@ -265,7 +265,19 @@ func redeemTankSoul(user: String) -> String {
 }
 
 
+func calculatePower(power: String) -> String{
+    let power = Double(power) ?? 0
+    if power == 0 {
+        return "Please give a valid power number"
+    }
+    let full = String(format: "%.2f", 100 / power)
+    let lowerBound = String(format: "%.2f", 100 / (power - 1))
+    let lowerMid = String(format: "%.2f", 100 / (power - 0.5))
+    let highMid = String(format: "%.2f", 100 / (power + 0.5))
+    let highBound = String(format: "%.2f", 100 / (power + 1))
 
+    return "\(lowerBound) | \(lowerMid) | \(full) | \(highMid) | \(highBound)"
+}
 
 func getUnitOfTheDay() -> String {
     let lvl = Int(arc4random_uniform(30)) + 1
