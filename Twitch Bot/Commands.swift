@@ -283,140 +283,140 @@ func getUnitOfTheDay() -> String {
 }
 
 struct CostTable {
-    let lower: Int
-    let high: Int
-    let gold: Int
-    let scroll: Int
+    let l: Int
+    let h: Int
+    let g: Int
+    let s: Int
 }
 
 func calculateLevel(data: [String], commandName: String, user: String) -> String {
     
     let regularCost: [CostTable] = [
-        CostTable(lower: 1, high: 2, gold: 25, scroll: 15),
-        CostTable(lower: 2, high: 3, gold: 35, scroll: 20),
-        CostTable(lower: 3, high: 4, gold: 50, scroll: 25),
-        CostTable(lower: 4, high: 5, gold: 100, scroll: 50),
-        CostTable(lower: 5, high: 6, gold: 120, scroll: 60),
-        CostTable(lower: 6, high: 7, gold: 140, scroll: 70),
-        CostTable(lower: 7, high: 8, gold: 160, scroll: 80),
-        CostTable(lower: 8, high: 9, gold: 180, scroll: 90),
-        CostTable(lower: 9, high: 10, gold: 200, scroll: 100),
-        CostTable(lower: 10, high: 11, gold: 220, scroll: 110),
-        CostTable(lower: 11, high: 12, gold: 240, scroll: 120),
-        CostTable(lower: 12, high: 13, gold: 260, scroll: 130),
-        CostTable(lower: 13, high: 14, gold: 280, scroll: 140),
-        CostTable(lower: 14, high: 15, gold: 300, scroll: 150),
-        CostTable(lower: 15, high: 16, gold: 320, scroll: 160),
-        CostTable(lower: 16, high: 17, gold: 340, scroll: 170),
-        CostTable(lower: 17, high: 18, gold: 360, scroll: 180),
-        CostTable(lower: 18, high: 19, gold: 380, scroll: 190),
-        CostTable(lower: 19, high: 20, gold: 400, scroll: 200),
-        CostTable(lower: 20, high: 21, gold: 450, scroll: 220),
-        CostTable(lower: 21, high: 22, gold: 500, scroll: 240),
-        CostTable(lower: 22, high: 23, gold: 550, scroll: 260),
-        CostTable(lower: 23, high: 24, gold: 600, scroll: 280),
-        CostTable(lower: 24, high: 25, gold: 675, scroll: 300),
-        CostTable(lower: 25, high: 26, gold: 750, scroll: 320),
-        CostTable(lower: 26, high: 27, gold: 825, scroll: 340),
-        CostTable(lower: 27, high: 28, gold: 900, scroll: 360),
-        CostTable(lower: 28, high: 29, gold: 1000, scroll: 380),
-        CostTable(lower: 29, high: 30, gold: 1200, scroll: 400)
+        CostTable(l: 1, h: 2, g: 25, s: 15),
+        CostTable(l: 2, h: 3, g: 35, s: 20),
+        CostTable(l: 3, h: 4, g: 50, s: 25),
+        CostTable(l: 4, h: 5, g: 100, s: 50),
+        CostTable(l: 5, h: 6, g: 120, s: 60),
+        CostTable(l: 6, h: 7, g: 140, s: 70),
+        CostTable(l: 7, h: 8, g: 160, s: 80),
+        CostTable(l: 8, h: 9, g: 180, s: 90),
+        CostTable(l: 9, h: 10, g: 200, s: 100),
+        CostTable(l: 10, h: 11, g: 220, s: 110),
+        CostTable(l: 11, h: 12, g: 240, s: 120),
+        CostTable(l: 12, h: 13, g: 260, s: 130),
+        CostTable(l: 13, h: 14, g: 280, s: 140),
+        CostTable(l: 14, h: 15, g: 300, s: 150),
+        CostTable(l: 15, h: 16, g: 320, s: 160),
+        CostTable(l: 16, h: 17, g: 340, s: 170),
+        CostTable(l: 17, h: 18, g: 360, s: 180),
+        CostTable(l: 18, h: 19, g: 380, s: 190),
+        CostTable(l: 19, h: 20, g: 400, s: 200),
+        CostTable(l: 20, h: 21, g: 450, s: 220),
+        CostTable(l: 21, h: 22, g: 500, s: 240),
+        CostTable(l: 22, h: 23, g: 550, s: 260),
+        CostTable(l: 23, h: 24, g: 600, s: 280),
+        CostTable(l: 24, h: 25, g: 675, s: 300),
+        CostTable(l: 25, h: 26, g: 750, s: 320),
+        CostTable(l: 26, h: 27, g: 825, s: 340),
+        CostTable(l: 27, h: 28, g: 900, s: 360),
+        CostTable(l: 28, h: 29, g: 1000, s: 380),
+        CostTable(l: 29, h: 30, g: 1200, s: 400)
     ]
 
     let legendaryCost: [CostTable] = [
-        CostTable(lower: 1, high: 2, gold: 50, scroll: 10),
-        CostTable(lower: 2, high: 3, gold: 70, scroll: 10),
-        CostTable(lower: 3, high: 4, gold: 100, scroll: 10),
-        CostTable(lower: 4, high: 5, gold: 200, scroll: 10),
-        CostTable(lower: 5, high: 6, gold: 240, scroll: 10),
-        CostTable(lower: 6, high: 7, gold: 280, scroll: 10),
-        CostTable(lower: 7, high: 8, gold: 320, scroll: 10),
-        CostTable(lower: 8, high: 9, gold: 360, scroll: 10),
-        CostTable(lower: 9, high: 10, gold: 400, scroll: 10),
-        CostTable(lower: 10, high: 11, gold: 440, scroll: 15),
-        CostTable(lower: 11, high: 12, gold: 480, scroll: 15),
-        CostTable(lower: 12, high: 13, gold: 520, scroll: 15),
-        CostTable(lower: 13, high: 14, gold: 560, scroll: 15),
-        CostTable(lower: 14, high: 15, gold: 600, scroll: 15),
-        CostTable(lower: 15, high: 16, gold: 640, scroll: 15),
-        CostTable(lower: 16, high: 17, gold: 680, scroll: 15),
-        CostTable(lower: 17, high: 18, gold: 720, scroll: 15),
-        CostTable(lower: 18, high: 19, gold: 760, scroll: 15),
-        CostTable(lower: 19, high: 20, gold: 800, scroll: 15),
-        CostTable(lower: 20, high: 21, gold: 850, scroll: 20),
-        CostTable(lower: 21, high: 22, gold: 900, scroll: 20),
-        CostTable(lower: 22, high: 23, gold: 950, scroll: 20),
-        CostTable(lower: 23, high: 24, gold: 1000, scroll: 20),
-        CostTable(lower: 24, high: 25, gold: 1100, scroll: 20),
-        CostTable(lower: 25, high: 26, gold: 1200, scroll: 20),
-        CostTable(lower: 26, high: 27, gold: 1300, scroll: 20),
-        CostTable(lower: 27, high: 28, gold: 1500, scroll: 20),
-        CostTable(lower: 28, high: 29, gold: 1600, scroll: 20),
-        CostTable(lower: 29, high: 30, gold: 2000, scroll: 20)
+        CostTable(l: 1, h: 2, g: 50, s: 10),
+        CostTable(l: 2, h: 3, g: 70, s: 10),
+        CostTable(l: 3, h: 4, g: 100, s: 10),
+        CostTable(l: 4, h: 5, g: 200, s: 10),
+        CostTable(l: 5, h: 6, g: 240, s: 10),
+        CostTable(l: 6, h: 7, g: 280, s: 10),
+        CostTable(l: 7, h: 8, g: 320, s: 10),
+        CostTable(l: 8, h: 9, g: 360, s: 10),
+        CostTable(l: 9, h: 10, g: 400, s: 10),
+        CostTable(l: 10, h: 11, g: 440, s: 15),
+        CostTable(l: 11, h: 12, g: 480, s: 15),
+        CostTable(l: 12, h: 13, g: 520, s: 15),
+        CostTable(l: 13, h: 14, g: 560, s: 15),
+        CostTable(l: 14, h: 15, g: 600, s: 15),
+        CostTable(l: 15, h: 16, g: 640, s: 15),
+        CostTable(l: 16, h: 17, g: 680, s: 15),
+        CostTable(l: 17, h: 18, g: 720, s: 15),
+        CostTable(l: 18, h: 19, g: 760, s: 15),
+        CostTable(l: 19, h: 20, g: 800, s: 15),
+        CostTable(l: 20, h: 21, g: 850, s: 20),
+        CostTable(l: 21, h: 22, g: 900, s: 20),
+        CostTable(l: 22, h: 23, g: 950, s: 20),
+        CostTable(l: 23, h: 24, g: 1000, s: 20),
+        CostTable(l: 24, h: 25, g: 1100, s: 20),
+        CostTable(l: 25, h: 26, g: 1200, s: 20),
+        CostTable(l: 26, h: 27, g: 1300, s: 20),
+        CostTable(l: 27, h: 28, g: 1500, s: 20),
+        CostTable(l: 28, h: 29, g: 1600, s: 20),
+        CostTable(l: 29, h: 30, g: 2000, s: 20)
     ]
     
     let capRegularCost: [CostTable] = [
-            CostTable(lower: 1, high: 2, gold: 6, scroll: 7),
-            CostTable(lower: 2, high: 3, gold: 7, scroll: 8),
-            CostTable(lower: 3, high: 4, gold: 8, scroll: 9),
-            CostTable(lower: 4, high: 5, gold: 9, scroll: 10),
-            CostTable(lower: 5, high: 6, gold: 10, scroll: 11),
-            CostTable(lower: 6, high: 7, gold: 15, scroll: 12),
-            CostTable(lower: 7, high: 8, gold: 20, scroll: 13),
-            CostTable(lower: 8, high: 9, gold: 25, scroll: 14),
-            CostTable(lower: 9, high: 10, gold: 30, scroll: 15),
-            CostTable(lower: 10, high: 11, gold: 35, scroll: 16),
-            CostTable(lower: 11, high: 12, gold: 40, scroll: 17),
-            CostTable(lower: 12, high: 13, gold: 45, scroll: 18),
-            CostTable(lower: 13, high: 14, gold: 50, scroll: 19),
-            CostTable(lower: 14, high: 15, gold: 55, scroll: 20),
-            CostTable(lower: 15, high: 16, gold: 60, scroll: 22),
-            CostTable(lower: 16, high: 17, gold: 65, scroll: 24),
-            CostTable(lower: 17, high: 18, gold: 70, scroll: 26),
-            CostTable(lower: 18, high: 19, gold: 75, scroll: 28),
-            CostTable(lower: 19, high: 20, gold: 100, scroll: 30),
-            CostTable(lower: 20, high: 21, gold: 120, scroll: 40),
-            CostTable(lower: 21, high: 22, gold: 140, scroll: 60),
-            CostTable(lower: 22, high: 23, gold: 160, scroll: 60),
-            CostTable(lower: 23, high: 24, gold: 180, scroll: 70),
-            CostTable(lower: 24, high: 25, gold: 200, scroll: 90),
-            CostTable(lower: 25, high: 26, gold: 220, scroll: 90),
-            CostTable(lower: 26, high: 27, gold: 240, scroll: 100),
-            CostTable(lower: 27, high: 28, gold: 260, scroll: 115),
-            CostTable(lower: 28, high: 29, gold: 280, scroll: 130),
-            CostTable(lower: 29, high: 30, gold: 300, scroll: 150)
+            CostTable(l: 1, h: 2, g: 6, s: 7),
+            CostTable(l: 2, h: 3, g: 7, s: 8),
+            CostTable(l: 3, h: 4, g: 8, s: 9),
+            CostTable(l: 4, h: 5, g: 9, s: 10),
+            CostTable(l: 5, h: 6, g: 10, s: 11),
+            CostTable(l: 6, h: 7, g: 15, s: 12),
+            CostTable(l: 7, h: 8, g: 20, s: 13),
+            CostTable(l: 8, h: 9, g: 25, s: 14),
+            CostTable(l: 9, h: 10, g: 30, s: 15),
+            CostTable(l: 10, h: 11, g: 35, s: 16),
+            CostTable(l: 11, h: 12, g: 40, s: 17),
+            CostTable(l: 12, h: 13, g: 45, s: 18),
+            CostTable(l: 13, h: 14, g: 50, s: 19),
+            CostTable(l: 14, h: 15, g: 55, s: 20),
+            CostTable(l: 15, h: 16, g: 60, s: 22),
+            CostTable(l: 16, h: 17, g: 65, s: 24),
+            CostTable(l: 17, h: 18, g: 70, s: 26),
+            CostTable(l: 18, h: 19, g: 75, s: 28),
+            CostTable(l: 19, h: 20, g: 100, s: 30),
+            CostTable(l: 20, h: 21, g: 120, s: 40),
+            CostTable(l: 21, h: 22, g: 140, s: 60),
+            CostTable(l: 22, h: 23, g: 160, s: 60),
+            CostTable(l: 23, h: 24, g: 180, s: 70),
+            CostTable(l: 24, h: 25, g: 200, s: 90),
+            CostTable(l: 25, h: 26, g: 220, s: 90),
+            CostTable(l: 26, h: 27, g: 240, s: 100),
+            CostTable(l: 27, h: 28, g: 260, s: 115),
+            CostTable(l: 28, h: 29, g: 280, s: 130),
+            CostTable(l: 29, h: 30, g: 300, s: 150)
         ]
 
         let capLegendaryCost: [CostTable] = [
-            CostTable(lower: 1, high: 2, gold: 12, scroll: 10),
-            CostTable(lower: 2, high: 3, gold: 14, scroll: 10),
-            CostTable(lower: 3, high: 4, gold: 16, scroll: 10),
-            CostTable(lower: 4, high: 5, gold: 18, scroll: 10),
-            CostTable(lower: 5, high: 6, gold: 20, scroll: 10),
-            CostTable(lower: 6, high: 7, gold: 30, scroll: 10),
-            CostTable(lower: 7, high: 8, gold: 40, scroll: 10),
-            CostTable(lower: 8, high: 9, gold: 50, scroll: 10),
-            CostTable(lower: 9, high: 10, gold: 60, scroll: 10),
-            CostTable(lower: 10, high: 11, gold: 70, scroll: 15),
-            CostTable(lower: 11, high: 12, gold: 80, scroll: 15),
-            CostTable(lower: 12, high: 13, gold: 90, scroll: 15),
-            CostTable(lower: 13, high: 14, gold: 100, scroll: 15),
-            CostTable(lower: 14, high: 15, gold: 110, scroll: 15),
-            CostTable(lower: 15, high: 16, gold: 120, scroll: 15),
-            CostTable(lower: 16, high: 17, gold: 130, scroll: 15),
-            CostTable(lower: 17, high: 18, gold: 140, scroll: 15),
-            CostTable(lower: 18, high: 19, gold: 150, scroll: 15),
-            CostTable(lower: 19, high: 20, gold: 200, scroll: 15),
-            CostTable(lower: 20, high: 21, gold: 220, scroll: 20),
-            CostTable(lower: 21, high: 22, gold: 240, scroll: 20),
-            CostTable(lower: 22, high: 23, gold: 260, scroll: 20),
-            CostTable(lower: 23, high: 24, gold: 280, scroll: 20),
-            CostTable(lower: 24, high: 25, gold: 300, scroll: 20),
-            CostTable(lower: 25, high: 26, gold: 320, scroll: 20),
-            CostTable(lower: 26, high: 27, gold: 340, scroll: 20),
-            CostTable(lower: 27, high: 28, gold: 360, scroll: 20),
-            CostTable(lower: 28, high: 29, gold: 380, scroll: 20),
-            CostTable(lower: 29, high: 30, gold: 400, scroll: 20)
+            CostTable(l: 1, h: 2, g: 12, s: 10),
+            CostTable(l: 2, h: 3, g: 14, s: 10),
+            CostTable(l: 3, h: 4, g: 16, s: 10),
+            CostTable(l: 4, h: 5, g: 18, s: 10),
+            CostTable(l: 5, h: 6, g: 20, s: 10),
+            CostTable(l: 6, h: 7, g: 30, s: 10),
+            CostTable(l: 7, h: 8, g: 40, s: 10),
+            CostTable(l: 8, h: 9, g: 50, s: 10),
+            CostTable(l: 9, h: 10, g: 60, s: 10),
+            CostTable(l: 10, h: 11, g: 70, s: 15),
+            CostTable(l: 11, h: 12, g: 80, s: 15),
+            CostTable(l: 12, h: 13, g: 90, s: 15),
+            CostTable(l: 13, h: 14, g: 100, s: 15),
+            CostTable(l: 14, h: 15, g: 110, s: 15),
+            CostTable(l: 15, h: 16, g: 120, s: 15),
+            CostTable(l: 16, h: 17, g: 130, s: 15),
+            CostTable(l: 17, h: 18, g: 140, s: 15),
+            CostTable(l: 18, h: 19, g: 150, s: 15),
+            CostTable(l: 19, h: 20, g: 200, s: 15),
+            CostTable(l: 20, h: 21, g: 220, s: 20),
+            CostTable(l: 21, h: 22, g: 240, s: 20),
+            CostTable(l: 22, h: 23, g: 260, s: 20),
+            CostTable(l: 23, h: 24, g: 280, s: 20),
+            CostTable(l: 24, h: 25, g: 300, s: 20),
+            CostTable(l: 25, h: 26, g: 320, s: 20),
+            CostTable(l: 26, h: 27, g: 340, s: 20),
+            CostTable(l: 27, h: 28, g: 360, s: 20),
+            CostTable(l: 28, h: 29, g: 380, s: 20),
+            CostTable(l: 29, h: 30, g: 400, s: 20)
         ]
     
     
@@ -448,7 +448,7 @@ func calculateLevel(data: [String], commandName: String, user: String) -> String
             }
             
             if startingLevel >= endingLevel || startingLevel <= 0 || endingLevel > 30{
-                return "@\(user) Those are not valid levels :p Command usage is: !levelup starting_level ending_level or !levelup legendary starting_level ending_level. E.g: !levelup 3 17"
+                return "@\(user) Those are not valid levels :p Command usage is: !levelup/!levelupcaptain starting_level ending_level or !levelup/!levelupcaptain legendary starting_level ending_level. E.g: !levelup 3 17"
             } else if endingLevel == 30 {
                 return "@\(user) Can't go past level 30 DoritosChip"
             }
@@ -469,18 +469,18 @@ func calculateLevel(data: [String], commandName: String, user: String) -> String
             
             if isLegendary {
                 for level in startingLevel..<endingLevel {
-                    if let cost = lTable.first(where: { $0.lower <= level && $0.high > level }) {
-                        coins += cost.gold
-                        scrolls += cost.scroll
+                    if let cost = lTable.first(where: { $0.l <= level && $0.h > level }) {
+                        coins += cost.g
+                        scrolls += cost.s
                     } else {
                         throw NSError(domain: "", code: 0, userInfo: nil)
                     }
                 }
             } else {
                 for level in startingLevel..<endingLevel {
-                    if let cost = rTable.first(where: { $0.lower <= level && $0.high > level }) {
-                        coins += cost.gold
-                        scrolls += cost.scroll
+                    if let cost = rTable.first(where: { $0.l <= level && $0.h > level }) {
+                        coins += cost.g
+                        scrolls += cost.s
                     } else {
                         throw NSError(domain: "", code: 0, userInfo: nil)
                     }
@@ -490,6 +490,6 @@ func calculateLevel(data: [String], commandName: String, user: String) -> String
             return "@\(user) level up cost will be \(coins) coins and \(scrolls) scrolls"
             
         } catch {
-            return "@\(user) command usage is: !levelup starting_level ending_level or !levelup legendary starting_level ending_level. E.g: !levelup 3 17"
+            return "@\(user) command usage is: !levelup/!levelupcaptain starting_level ending_level or !levelup/!levelupcaptain legendary starting_level ending_level. E.g: !levelup 3 17"
         }
     }

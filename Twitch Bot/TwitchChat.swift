@@ -216,6 +216,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
     case "!levelup", "!level", "!levelupcaptain", "!levelcaptain":
         break
     case "!mvp":
+        
         getMvp(username: user) { result in
             channel.send(result)
         }
@@ -231,7 +232,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         if streamer == user {
             channel.send(setGameMode(mode: argument))
         }
-    case "!dungeonleaderboard":
+    case "!dungeonleaderboard", "!dungeonsleaderboard":
         getDungeonLeaderboard() { leaderBoard in
             channel.send(leaderBoard[0])
             if leaderBoard[1] != "" {
@@ -240,7 +241,6 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         }
     case "!tanksoul":
         channel.send(redeemTankSoul(user: user))
-        
     default:
         channel.send("DoritosChip \(command) is not a command yet DoritosChip")
     }

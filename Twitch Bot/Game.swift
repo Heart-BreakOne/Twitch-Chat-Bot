@@ -142,7 +142,7 @@ func getMvp(username: String, completion: @escaping (String) -> Void){
                     }
                 } else {
 
-                    completion("Couldn't find you in the top 49 :(")
+                    completion("Couldn't find you in the top 50 :(")
                 }
             }
         } catch {
