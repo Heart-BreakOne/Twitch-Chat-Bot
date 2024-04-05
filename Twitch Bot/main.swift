@@ -23,6 +23,9 @@ func main() {
     
     updateUserData()
     updateGameData()
+    
+    UserDefaults.standard.setValue(false, forKey: "startUp")
+    UserDefaults.standard.synchronize()
 
     let twitchChatClosure = { () -> Void in
         while true {

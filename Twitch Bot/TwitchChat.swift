@@ -47,9 +47,12 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
         server?.delegate = self
         channel?.delegate = self
         
-        // let formattedTime = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .medium)
-        // channel?.send("\(formattedTime) - DoritosChip")
+        //let formattedTime = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .medium)
+        //channel?.send("\(formattedTime) - DoritosChip")
         // channel?.send("DoritosChip")
+        if sendFirstMessage() {
+            channel?.send("I'm in, DON'T FORGET TO DISABLE EMOTE ONLY")
+        }
     }
     
     func terminate() {

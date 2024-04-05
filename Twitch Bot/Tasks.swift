@@ -157,3 +157,16 @@ func playTTS(ttsString: String) {
         process.launch()
         process.waitUntilExit()
 }
+
+
+func sendFirstMessage() -> Bool {
+    let startUp = UserDefaults.standard.bool(forKey: "startUp")
+    if !startUp {
+        UserDefaults.standard.setValue(true, forKey: "startUp")
+        UserDefaults.standard.synchronize()
+        return true
+    }
+    else {
+        return false
+    }
+}

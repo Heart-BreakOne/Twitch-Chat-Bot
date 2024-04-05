@@ -61,7 +61,7 @@ func unbanUser(username: String, completion: @escaping (String) -> Void) {
                 let banList = usersList["bans"] as! [[String: Any]]
 
                 for banned in banList {
-                    guard let ban = banned as? [String: Any], !ban.isEmpty else {
+                    guard let ban = banned as? [String : Any], !ban.isEmpty else {
                         continue
                     }
 
@@ -244,7 +244,7 @@ func checkMidPatch() {
                 let info = dict["info"] as! [String: String]
                 
                 let dataPath = info["dataPath"]!
-                var localDataPath = UserDefaults.standard.string(forKey: "dataPath")
+                let localDataPath = UserDefaults.standard.string(forKey: "dataPath")
                 if dataPath != localDataPath {
                     updateGameData()
                     playTTS(ttsString: "Brace yourselves, a midpatch is coming")
@@ -294,9 +294,9 @@ func updateGameData() {
                     return
                 }
                 let info = dict["info"] as! [String: String]
-                let dataVersion = info["dataVersion"] as! String
-                let clientVersion = info["version"] as! String
-                let dataPath = info["dataPath"] as! String
+                let dataVersion = info["dataVersion"]!
+                let clientVersion = info["version"]!
+                let dataPath = info["dataPath"]!
                 UserDefaults.standard.set(dataVersion, forKey: "dataVersion")
                 UserDefaults.standard.set(clientVersion, forKey: "clientVersion")
                 UserDefaults.standard.set(dataPath, forKey: "dataPath")
