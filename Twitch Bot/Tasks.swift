@@ -123,10 +123,10 @@ func getCodeString(code: String) -> String {
     var result = ""
     for char in code {
         let filteredWords = words.filter { word in
-            let startsWithTransOrAnti = word.lowercased().starts(with: "trans") || word.lowercased().starts(with: "anti")
-            let endsWithIsmOrIsms = word.lowercased().hasSuffix("ism") || word.lowercased().hasSuffix("isms")
+            let notAllowedPrefix = word.lowercased().starts(with: "trans") || word.lowercased().starts(with: "anti")
+            let notAllowedSuffix = word.lowercased().hasSuffix("ism") || word.lowercased().hasSuffix("isms") || word.lowercased().hasSuffix("phile") || word.lowercased().hasSuffix("philes") || word.lowercased().hasSuffix("ist") || word.lowercased().hasSuffix("ists")
             let notInSkipWords = !skipWords.contains(word.lowercased())
-            return word.hasPrefix(String(char)) && word.count > 6 && !startsWithTransOrAnti && !endsWithIsmOrIsms && notInSkipWords
+            return word.hasPrefix(String(char)) && word.count > 6 && !notAllowedPrefix && !notAllowedSuffix && notInSkipWords
         }
         if let randomWord = filteredWords.randomElement() {
             let capitalizedWord = randomWord.capitalized
