@@ -264,7 +264,6 @@ func redeemTankSoul(user: String) -> String {
         return "\(user), you now have 1 tank soul DoritosChip"
     }
     
-    return ""
 }
 
 
