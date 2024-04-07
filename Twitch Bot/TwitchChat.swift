@@ -32,6 +32,7 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
         )
         
         establishConnection()
+        scrollSchedule()
     }
     
     private func establishConnection() {
@@ -53,6 +54,7 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
         if sendFirstMessage() {
             channel?.send("I'm in, DON'T FORGET TO DISABLE EMOTE ONLY")
         }
+        
     }
     
     func terminate() {
@@ -65,6 +67,36 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
         
         // Release resources or perform any additional cleanup tasks if needed
         
+    }
+    
+    func scrollSchedule() {
+        let calendar = Calendar.current
+        
+        // Define the desired refresh times
+        let refreshTimes: [Int] = [3, 9, 12, 15, 21]
+
+        while true {
+            let now = Date()
+            let currentHour = calendar.component(.hour, from: now)
+            
+            var nextRefreshTime = Date()
+            for hour in refreshTimes {
+                if hour >= currentHour {
+                    nextRefreshTime = calendar.date(bySettingHour: hour, minute: 0, second: 0, of: now) ?? nextRefreshTime
+                    break
+                }
+            }
+            
+            if nextRefreshTime < now {
+                nextRefreshTime = calendar.date(byAdding: .day, value: 1, to: nextRefreshTime) ?? nextRefreshTime
+            }
+
+            let timeDifference = nextRefreshTime.timeIntervalSince(now)
+            
+            Thread.sleep(forTimeInterval: timeDifference)
+            
+            channel?.send("This is a timed test")
+        }
     }
     
     

@@ -247,6 +247,7 @@ func redeemTankSoul(user: String) -> String {
                 let newQtt = qtt + 1
                 tankSouls[index]["qtt"] = newQtt
                 tankSouls[index]["lastRedeem"] = dateFormatter.string(from: currentTime)
+                json["tanksoul"] = tankSouls
                 updateJson(json: json)
                 return "\(user), you now have \(newQtt) tank souls DoritosChip."
             } else {
@@ -262,7 +263,10 @@ func redeemTankSoul(user: String) -> String {
         updateJson(json: json)
         return "\(user), you now have 1 tank soul DoritosChip"
     }
+    
+    return ""
 }
+
 
 
 func calculatePower(power: String) -> String{
