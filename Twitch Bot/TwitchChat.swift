@@ -73,7 +73,7 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
         let calendar = Calendar.current
         
         // Define the desired refresh times
-        let refreshTimes: [Int] = [3, 9, 12, 15, 21]
+        let refreshTimes: [Int] = [3, 9, 15, 21]
 
         while true {
             let now = Date()
@@ -95,7 +95,7 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
             
             Thread.sleep(forTimeInterval: timeDifference)
             
-            channel?.send("This is a timed test")
+            channel?.send("The scroll store just refreshed!!!")
         }
     }
     
