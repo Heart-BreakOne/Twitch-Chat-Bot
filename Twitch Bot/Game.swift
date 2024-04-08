@@ -180,16 +180,33 @@ func getDungeonLeaderboard( completion: @escaping ([String]) -> Void) {
                 
                 let sortedCaptains = top10.sorted { (cap1, cap2) -> Bool in
                     guard let startTime1 = cap1["startTime"] as? String,
-                          let endTime1 = cap1["endTime"] as? String,
                           let startTime2 = cap2["startTime"] as? String,
-                          let endTime2 = cap2["endTime"] as? String,
                           let completedLevels1 = cap1["completedLevels"] as? String,
                           let completedLevels2 = cap2["completedLevels"] as? String else {
                         return false
                     }
                     
-                    let duration1 = calculateDuration(startTime: startTime1, endTime: endTime1)
-                    let duration2 = calculateDuration(startTime: startTime2, endTime: endTime2)
+                    let endTime1: String?
+                    let endTime2: String?
+                    
+                    if let endTimeStr1 = cap1["endTime"] as? String {
+                        endTime1 = endTimeStr1
+                    } else {
+                        endTime1 = nil
+                    }
+                    
+                    if let endTimeStr2 = cap2["endTime"] as? String {
+                        endTime2 = endTimeStr2
+                    } else {
+                        endTime2 = nil
+                    }
+                    
+                    guard let endTimeStr1 = endTime1, let endTimeStr2 = endTime2 else {
+                        return false
+                    }
+                    
+                    let duration1 = calculateDuration(startTime: startTime1, endTime: endTimeStr1)
+                    let duration2 = calculateDuration(startTime: startTime2, endTime: endTimeStr2)
                     
                     if completedLevels1 == completedLevels2 {
                         return duration1 < duration2
@@ -197,6 +214,7 @@ func getDungeonLeaderboard( completion: @escaping ([String]) -> Void) {
                         return false
                     }
                 }
+
                 
                 // Do the first 5
                 for (index, cap) in sortedCaptains.prefix(5).enumerated() {
@@ -204,9 +222,15 @@ func getDungeonLeaderboard( completion: @escaping ([String]) -> Void) {
                     let capName = cap["twitchDisplayName"] as! String
                     let completedLevels = cap["completedLevels"] as! String
                     let startTime = cap["startTime"] as! String
-                    let endTime = cap["endTime"] as! String
-                    let duration = calculateDuration(startTime: startTime, endTime: endTime)
-                    let phrase = "\(index) - \(capName) - Completed \(completedLevels) levels in \(duration) hours.  "
+                    let endTime = cap["endTime"] as? String ?? ""
+                    var duration = ""
+                    if endTime == "" {
+                        duration = "Dungeon in progress. "
+                    } else {
+                        let durDouble = calculateDuration(startTime: startTime, endTime: endTime)
+                        duration = "Completed \(completedLevels) levels in \(durDouble) hours. "
+                    }
+                    let phrase = "\(index) - \(capName) - \(duration)"
                     leaderboardString1 += phrase
                 }
                 // Do that last 10
@@ -215,9 +239,15 @@ func getDungeonLeaderboard( completion: @escaping ([String]) -> Void) {
                     let capName = cap["twitchDisplayName"] as! String
                     let completedLevels = cap["completedLevels"] as! String
                     let startTime = cap["startTime"] as! String
-                    let endTime = cap["endTime"] as! String
-                    let duration = calculateDuration(startTime: startTime, endTime: endTime)
-                    let phrase = "\(index) - \(capName) - Completed \(completedLevels) levels in \(duration) hours.  "
+                    let endTime = cap["endTime"] as? String ?? ""
+                    var duration = ""
+                    if endTime == "" {
+                        duration = "Dungeon in progress. "
+                    } else {
+                        let durDouble = calculateDuration(startTime: startTime, endTime: endTime)
+                        duration = "Completed \(completedLevels) levels in \(durDouble) hours. "
+                    }
+                    let phrase = "\(index) - \(capName) - \(duration)"
                     leaderboardString2 += phrase
                 }
                 completion([leaderboardString1, leaderboardString2])
