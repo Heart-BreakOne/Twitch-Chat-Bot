@@ -80,6 +80,10 @@ func sendCode() -> String {
         else if mode == "dungeon" || mode == "dungeons" {
             return "Code is: \(code). This captain sucks at dungeons, I'm don't know why they coded it."
         } else if mode == "clash" {
+            if code.starts(with: "$") {
+                let c = String(code.dropFirst())
+                return "No tank souls, no spies \(c) so the spell can be placed."
+            }
             let string = "Read the clash instructions and find the 4 random coded words: No spies as they use 100% power and prevent spell placement. No tanks souls. Follow the markers. No spies, no tank souls. No spies, no tank souls."
             let rangeOfAnd = string.range(of: "power")!
             
@@ -266,6 +270,21 @@ func redeemTankSoul(user: String) -> String {
     
 }
 
+func convertTemperature(cmd: String, temp: String) -> String {
+    if let t = Double(temp) {
+        if cmd == "!c2f" {
+            //Convert celcius to farenheit
+            let f = String(format: "%.2f", t * 9/5 + 32)
+            return "\(temp)°C is \(f)°F"
+        } else {
+            // Convert farenheit to celsius
+            let c = String(format: "%.2f", (t - 32) * 5/9)
+            return "\(t)°F is \(c)°C"
+        }
+    } else {
+        return "Please give a valid temperature"
+    }
+}
 
 
 func calculatePower(power: String) -> String{
@@ -297,14 +316,15 @@ func getUnitOfTheDay() -> String {
     return " today you are a level \(lvl)\(epic)\(lvl >= 20 ? spec : "") \(unitName) \(soul)"
 }
 
-struct CostTable {
-    let l: Int
-    let h: Int
-    let g: Int
-    let s: Int
-}
 
 func calculateLevel(data: [String], commandName: String, user: String) -> String {
+    
+    struct CostTable {
+        let l: Int
+        let h: Int
+        let g: Int
+        let s: Int
+    }
     
     let regularCost: [CostTable] = [
         CostTable(l: 1, h: 2, g: 25, s: 15),

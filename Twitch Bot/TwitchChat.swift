@@ -136,14 +136,13 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
     case "!battle":
         playBattle()
     case "!unban":
-        if argument != "" {
+        let streamer = getStreamer()
+        if (streamer == user) {
             unbanUser(username: argument) { result in
                 channel.send(result)
             }
         } else {
-            unbanUser(username: user) { result in
-                channel.send(result)
-            }
+            channel.send("Only the captain can do that :p")
         }
     case "!ban":
         let streamer = getStreamer()
@@ -249,6 +248,8 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         }
     case "!tanksoul":
         channel.send(redeemTankSoul(user: user))
+    case "!c2f", "!f2c":
+        channel.send(convertTemperature(cmd: command, temp: argument))
     default:
         channel.send("DoritosChip \(command) is not a command yet DoritosChip")
     }
