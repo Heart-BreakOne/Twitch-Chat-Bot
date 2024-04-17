@@ -22,7 +22,7 @@ func main() {
     }
     
     updateUserData()
-    updateGameData()
+    //updateGameData()
     
     UserDefaults.standard.setValue(false, forKey: "startUp")
     UserDefaults.standard.synchronize()
@@ -39,7 +39,8 @@ func main() {
     let backgroundQueue = DispatchQueue(label: "com.example.backgroundQueue", qos: .background)
     backgroundQueue.async {
         while true {
-            checkMidPatch()
+            sleep(5000)
+            //checkMidPatch()
         }
     }
 

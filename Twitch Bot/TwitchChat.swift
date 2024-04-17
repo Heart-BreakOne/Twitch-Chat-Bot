@@ -135,6 +135,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
     switch command {
     case "!battle":
         playBattle()
+    /*
     case "!unban":
         let streamer = getStreamer()
         if (streamer == user) {
@@ -158,6 +159,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         else {
             channel.send("Only the captain can do that :p")
         }
+    */
     case "!streak":
         channel.send(sendStreak())
     case "!setcode":
@@ -197,7 +199,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         channel.send(sendCommands())
     case "!ping":
         channel.send("pong")
-        //case "!predict":
+    //case "!predict":
         // channel.send("We are still collecting enough data to reliably predict battles DoritosChip")
     case "!stats":
         if(argument == "doritoschip") {
@@ -217,11 +219,11 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         break
     case "!levelup", "!level", "!levelupcaptain", "!levelcaptain":
         break
-    case "!mvp":
-        
+    /*case "!mvp":
         getMvp(username: user) { result in
             channel.send(result)
         }
+     */
     case "!myunit":
         channel.send("@\(user)\(getUnitOfTheDay())")
     case "!chest":
@@ -234,6 +236,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         if streamer == user {
             channel.send(setGameMode(mode: argument))
         }
+    /*
     case "!dungeonleaderboard", "!dungeonsleaderboard":
         getDungeonLeaderboard() { leaderBoard in
             channel.send(leaderBoard[0])
@@ -241,6 +244,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
                 channel.send(leaderBoard[1])
             }
         }
+    */
     case "!power":
         let streamer = getStreamer()
         if streamer == user {
