@@ -55,7 +55,7 @@ func setCode(code: String) -> String {
     var json = getJson()
     json["code"] = code
     updateJson(json: json)
-    return "New code has been set. Don't forget to !setmode. DoritosChip"
+    return "New code has been set. Don't forget to !setmode."
 }
 
 func setGameMode(mode: String) -> String {
@@ -72,7 +72,7 @@ func sendCode() -> String {
     let mode = (json["mode"] as! String).lowercased()
     
     if code == "none" {
-        return "No code at the moment! DoritosChip"
+        return "No code at the moment!"
     } else {
         if mode == "duels" || mode == "duel" {
             return "Code is: \(code). Coded duels usually means something is being tested or there's PvP clash practice happening, please follow the markers to help with the practice."
@@ -203,7 +203,7 @@ func getCaptainStats(from: String, battleLog: [[String: Any]]) -> String{
     }
     
     if wins == 0 && losses == 0 {
-        return "DoritosChip No data to show DoritosChip"
+        return "No data to show."
     } else {
         let total = wins + losses
         let winRate = Int(Double(wins) / Double(total) * 100.0)
