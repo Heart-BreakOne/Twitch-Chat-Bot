@@ -78,7 +78,7 @@ func sendCode() -> String {
             return "Code is: \(code). Coded duels usually means something is being tested or there's PvP clash practice happening, please follow the markers to help with the practice."
         }
         else if mode == "dungeon" || mode == "dungeons" {
-            return "Code is: \(code). This captain sucks at dungeons, I'm don't know why they coded it."
+            return "Dungeon code is: \(code). This captain's specialty is PvP, they have no clue what they are doing on Dungeons."
         } else if mode == "clash" {
             if code.starts(with: "$") {
                 let c = String(code.dropFirst())

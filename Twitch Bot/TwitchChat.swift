@@ -51,7 +51,7 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
         //channel?.send("\(formattedTime) - DoritosChip")
         // channel?.send("DoritosChip")
         if sendFirstMessage() {
-            channel?.send("I'm in, DON'T FORGET TO DISABLE EMOTE ONLY")
+            channel?.send("I'm in, DON'T FORGET TO ENABLE CHAT")
         }
         
     }
@@ -89,7 +89,11 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
              }
              }
              */
-            
+            if user.lowercased() == "captaintvbot" {
+                if command.lowercased().contains("battle is ready to begin!") {
+                    playTTS(ttsString: "The battle is ready to begin!")
+                }
+            }
             if !(command.first == "!") && (command != "DoritosChip") && (command != "BOP"){
                 return
             }
@@ -168,10 +172,6 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         } else {
             channel.send(checkStats(from: argument))
         }
-    case "!lurk":
-        channel.send("DoritosChip \(user) enjoy lurking DoritosChip")
-    case "!unlurk":
-        channel.send("DoritosChip \(user), welcome back to Streamlandia! DoritosChip")
     case "!log":
         break
     case "!levelup", "!level", "!levelupcaptain", "!levelcaptain":
@@ -183,6 +183,10 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         
         
     /*
+     case "!lurk":
+         channel.send("DoritosChip \(user) enjoy lurking DoritosChip")
+     case "!unlurk":
+         channel.send("DoritosChip \(user), welcome back to Streamlandia! DoritosChip")
      case "!quote":
          channel.send(sendRdmStr(key: "gameTips"))
      case "!box":
@@ -256,8 +260,5 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
      case "!tanksoul":
          channel.send(redeemTankSoul(user: user))
     */
-    
-    
-    
-    
+
 }
