@@ -51,7 +51,7 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
         //channel?.send("\(formattedTime) - DoritosChip")
         // channel?.send("DoritosChip")
         if sendFirstMessage() {
-            channel?.send("I'm in, DON'T FORGET TO ENABLE CHAT")
+            channel?.send("I'm in, DON'T FORGET TO DISABLE SHIELD MODE.")
         }
         
     }

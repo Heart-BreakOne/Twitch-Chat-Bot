@@ -70,35 +70,39 @@ func sendCode() -> String {
     let json = getJson()
     let code = json["code"] as! String
     let mode = (json["mode"] as! String).lowercased()
-    
-    if code == "none" {
-        return "No code at the moment!"
-    } else {
-        if mode == "duels" || mode == "duel" {
-            return "Code is: \(code). Coded duels usually means something is being tested or there's PvP clash practice happening, please follow the markers to help with the practice."
-        }
-        else if mode == "dungeon" || mode == "dungeons" {
-            return "Dungeon code is: \(code). This captain's specialty is PvP, they have no clue what they are doing on Dungeons."
-        } else if mode == "clash" {
-            if code.starts(with: "$") {
-                let c = String(code.dropFirst())
-                return "No tank souls, no spies \(c) so the spell can be placed."
-            }
-            let string = "Read the clash instructions and find the 4 random coded words: No spies as they use 100% power and prevent spell placement. No tanks souls. Follow the markers. No spies, no tank souls. No spies, no tank souls."
-            let rangeOfAnd = string.range(of: "power")!
+    var newCode = ""
+    var hasSign = false
+    var msg = ""
+    if code.starts(with: "$") {
+        hasSign = true
+        newCode = String(code.dropFirst())
+    }
+    switch mode {
+    case "duels", "duel":
+        msg = "Code is: \(hasSign ? newCode : code). Coded duels usually means something is being tested or there's PvP clash practice happening, please follow the markers to help with the practice."
+    case "dungeon", "dungeons":
+        msg = "Dungeon code is: \(hasSign ? newCode : code). This captain's specialty is PvP, they have no clue what they are doing on Dungeons."
+    case "clash":
+        if hasSign {
+            msg = "No tank souls, no spies \(newCode) so the spell can be placed."
+        } else {
+            let instructions = "Read the clash instructions and find the 4 random coded words: No spies as they use 100% power and prevent spell placement. No tanks souls. Follow the markers. No spies, no tank souls. No spies, no tank souls."
+            let powerRange = instructions.range(of: "power")!
+            let upperBound = powerRange.upperBound
+            var randomIndex = instructions.index(powerRange.upperBound, offsetBy: Int.random(in: 0..<(instructions.distance(from: powerRange.upperBound, to: instructions.endIndex))))
             
-            var randomIndex = string.index(rangeOfAnd.upperBound, offsetBy: Int.random(in: 0..<(string.distance(from: rangeOfAnd.upperBound, to: string.endIndex))))
-            
-            while string[randomIndex] != " " {
-                randomIndex = string.index(after: randomIndex)
+            while instructions[randomIndex] != " " {
+                randomIndex = instructions.index(after: randomIndex)
             }
             let encodedCode = getCodeString(code: code)
-            let modifiedString = String(string.prefix(upTo: randomIndex)) + " " + encodedCode + String(string.suffix(from: randomIndex))
-            return modifiedString
-        } else {
-            return "No code for campaign."
+            let modifiedString = String(instructions.prefix(upTo: randomIndex)) + " " + encodedCode + String(instructions.suffix(from: randomIndex))
+            msg = modifiedString
         }
+    default:
+        msg = "No code available for campaign."
     }
+    
+    return msg
 }
 
 func updateList(username:String, listId: String) -> String {
@@ -297,7 +301,7 @@ func calculatePower(power: String) -> String{
     let lowerMid = String(format: "%.2f", 100 / (power - 0.5))
     let highMid = String(format: "%.2f", 100 / (power + 0.5))
     let highBound = String(format: "%.2f", 100 / (power + 1))
-
+    
     return "\(lowerBound) | \(lowerMid) | \(full) | \(highMid) | \(highBound)"
 }
 
