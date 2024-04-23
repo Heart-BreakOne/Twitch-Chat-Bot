@@ -8,6 +8,7 @@
 import Foundation
 
 let gameUrl = ""
+//let gameUrl = "https://www.streamraiders.com/api/game/"
 
 func banUser(username: String, completion: @escaping (String) -> Void){
     
