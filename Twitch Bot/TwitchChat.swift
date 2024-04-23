@@ -91,7 +91,9 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
              */
             if user.lowercased() == "captaintvbot" {
                 if command.lowercased().contains("battle is ready to begin!") {
-                    playTTS(ttsString: "The battle is ready to begin!")
+                    if canPlaySound() {
+                        playTTS(ttsString: "The battle is ready to begin!")
+                    }
                 }
             }
             if !(command.first == "!") && (command != "DoritosChip") && (command != "BOP"){
@@ -176,6 +178,15 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         break
     case "!levelup", "!level", "!levelupcaptain", "!levelcaptain":
         break
+    case "!setsound":
+        let streamer = getStreamer()
+        if streamer == user {
+            channel.send(setSound(state: argument))
+        }
+    case "!commands", "!command":
+        channel.send(sendCommands())
+    case "!box":
+        channel.send(sendRdmStr(key: "phrases"))
     default:
         return
     }
@@ -189,8 +200,6 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
          channel.send("DoritosChip \(user), welcome back to Streamlandia! DoritosChip")
      case "!quote":
          channel.send(sendRdmStr(key: "gameTips"))
-     case "!box":
-         channel.send(sendRdmStr(key: "phrases"))
      case "!permalist":
          if (argument == "") {
              channel.send("I can't put DoritosChip on the permalist")
@@ -211,10 +220,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
                  channel.send(updateList(username: argument, listId: "watchlist"))
              }
          }
-     case "!commands", "!command":
-         channel.send(sendCommands())
-     
-     case "!predict":
+    case "!predict":
          channel.send("We are still collecting enough data to reliably predict battles DoritosChip")
     case "!mvp":
         getMvp(username: user) { result in

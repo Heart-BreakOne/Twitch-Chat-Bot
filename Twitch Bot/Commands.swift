@@ -64,6 +64,20 @@ func setGameMode(mode: String) -> String {
     updateJson(json: json)
     return "Mode has been set to \(mode)."
 }
+func canPlaySound() -> Bool {
+    let json = getJson()
+    return json["battleSound"] as! Bool
+}
+
+func setSound(state: String) -> String {
+    
+    let s = state == "true"
+    var json = getJson()
+    json["battleSound"] = s
+    updateJson(json: json)
+    let status = s ? "enabled" : "disabled"
+    return "Battle sound has been \(status)."
+}
 
 //Send code if there's any
 func sendCode() -> String {
