@@ -187,6 +187,10 @@ func sendRdmStr(key: String) -> String {
     return randomMsg
 }
 
+func sendRuleBook() -> String {
+    return "Read the rulebook here: https://docs.google.com/document/d/e/2PACX-1vTznFGkwuyP-_KYhgtZwEMjxdatXXGANIVjpvMAjWqE_UnChtA90_irfx41WsONE-Gl6IBBSXk3v7BB/pub"
+}
+
 func getCurrentStats(battleLog: [[String: Any]]) -> String{
     var wins = 0
     var losses = 0

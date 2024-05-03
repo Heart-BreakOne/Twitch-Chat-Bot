@@ -187,11 +187,13 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         channel.send(sendCommands())
     case "!box":
         channel.send(sendRdmStr(key: "phrases"))
+    case "!rulebook":
+        channel.send(sendRuleBook())
+    case "!flipeurocoin":
+        channel.send("You flip a Euro coin and get \(Bool.random() ? "heads." : "tails.")")
     default:
         return
     }
-        
-        
         
     /*
      case "!lurk":
