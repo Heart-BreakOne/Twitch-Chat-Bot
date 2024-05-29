@@ -9,9 +9,9 @@ import Foundation
 import AVFoundation
 
 //Log battle
-func logBattle(eventId: String, captainName: String, outcome: String) -> String {
+func logBattle(captainName: String, outcome: String) -> String {
     
-    let dataToLog = ["event": eventId, "capName": captainName, "outcome": outcome] as [String : Any]
+    let dataToLog = ["event": "1", "capName": captainName, "outcome": outcome] as [String : Any]
     var json = getJson()
     var log = json["log"] as! [[String: Any]]
     log.insert(dataToLog, at: 0)
@@ -64,13 +64,13 @@ func setGameMode(mode: String) -> String {
     updateJson(json: json)
     return "Mode has been set to \(mode)."
 }
+
 func canPlaySound() -> Bool {
     let json = getJson()
     return json["battleSound"] as! Bool
 }
 
 func setSound(state: String) -> String {
-    
     let s = state == "true"
     var json = getJson()
     json["battleSound"] = s
@@ -191,6 +191,17 @@ func sendRuleBook() -> String {
     return "Read the rulebook here: https://docs.google.com/document/d/e/2PACX-1vTznFGkwuyP-_KYhgtZwEMjxdatXXGANIVjpvMAjWqE_UnChtA90_irfx41WsONE-Gl6IBBSXk3v7BB/pub"
 }
 
+func calcAmount(numbers: [String]) -> String {
+    let value = numbers[1].dropLast()
+    let x = Int(value) ?? 0
+    let y = Int(numbers[2]) ?? 0
+    if x == 0 || y == 0 {
+        return "Insert valid numbers"
+    }
+    let t = (y * 100) / x
+    return "\(t - 1) units + the spell."
+}
+
 func getCurrentStats(battleLog: [[String: Any]]) -> String{
     var wins = 0
     var losses = 0
@@ -243,14 +254,6 @@ func getDoritos() -> String {
     }
     return doritosChip
 }
-
-
-struct SoulData {
-    let username: String
-    let qtt: Int
-    let lastRedeem: String
-}
-
 
 func redeemTankSoul(user: String) -> String {
     var json = getJson()
@@ -308,7 +311,6 @@ func convertTemperature(cmd: String, temp: String) -> String {
     }
 }
 
-
 func calculatePower(power: String) -> String{
     let power = Double(power) ?? 0
     if power == 0 {
@@ -337,7 +339,6 @@ func getUnitOfTheDay() -> String {
     
     return " today you are a level \(lvl)\(epic)\(lvl >= 20 ? spec : "") \(unitName) \(soul)"
 }
-
 
 func calculateLevel(data: [String], commandName: String, user: String) -> String {
     
