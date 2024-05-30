@@ -43,10 +43,9 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
             session: session
         )
         self.channel = server?.join(chName)
-        
+
         server?.delegate = self
         channel?.delegate = self
-        
         //let formattedTime = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .medium)
         //channel?.send("\(formattedTime) - DoritosChip")
         // channel?.send("DoritosChip")
@@ -72,6 +71,9 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
     func didRecieveMessage(_ server: IRCServer, message: String) {
         // Handle server messages
         //print(message)
+        if message == "Welcome, GLHF!" {
+            channel?.send(sendRdmStr(key: "typos"))
+        }
     }
     
     func didRecieveMessage(_ channel: IRCChannel, message: String) {
