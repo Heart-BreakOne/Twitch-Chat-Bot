@@ -116,7 +116,7 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
             print("Argument: \(argument)")
             
             verifyCommand(channel: channel, user: user, command: commandName, argument: argument)
-            if user == getStreamer() && (commandName == "!log") {
+            if (user == getStreamer() || user == "") && (commandName == "!log") {
                 let data = command.components(separatedBy: " ")
                 if (data.count != 3) {
                     channel.send("Can't log DoritosChip")
@@ -124,7 +124,7 @@ class TwitchChat: IRCServerDelegate, IRCChannelDelegate {
                 }
                 channel.send(logBattle(captainName: data[1], outcome: data[2]))
             }
-            else if user == getStreamer() && (commandName == "!p") {
+            else if (user == getStreamer() || user == "") && (commandName == "!p") {
                 let data = command.components(separatedBy: " ")
                 if (data.count != 3) {
                     channel.send("!p x y")
@@ -155,7 +155,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         channel.send("\(sendCode())")
     case "!setcode":
         let streamer = getStreamer()
-        if (streamer == user) {
+        if streamer == user || user == "" {
             channel.send(setCode(code: argument))
         }
     case "!streamraiders", "!join", "!sr":
@@ -164,7 +164,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         channel.send(sendStreak())
     case "!power":
         let streamer = getStreamer()
-        if streamer == user {
+        if streamer == user || user == "" {
             channel.send(calculatePower(power: argument))
         }
     case "!scene", "!scenes":
@@ -177,7 +177,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         channel.send("@\(user) the rules are very simple: No tank souls, no spies, no erasing tactical markers and follow the markers if there are any.")
     case "!setmode":
         let streamer = getStreamer()
-        if streamer == user {
+        if streamer == user || user == "" {
             channel.send(setGameMode(mode: argument))
         }
     case "!ping":
@@ -194,7 +194,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         break
     case "!setsound":
         let streamer = getStreamer()
-        if streamer == user {
+        if streamer == user || user == "" {
             channel.send(setSound(state: argument))
         }
     case "!commands", "!command":
@@ -217,6 +217,12 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
          channel.send(getDoritos())
     case "!cockroach":
          channel.send(sendRdmStr(key: "cockroaches"))
+    case "!rigged":
+        channel.send("Stream Raiders is rigged u.u")
+    case "!souls", "!soul":
+        channel.send(sendRdmStr(key: "souls_command"))
+    case "!archer", "!barbarian", "!bomber", "!buster", "!flag", "!healer", "!lancer", "!paladin", "!rogue", "!saint", "!tank", "!vampire", "!warrior":
+        channel.send(getSoulInfo(key: command))
     default:
         return
     }
@@ -232,7 +238,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
              return
          } else {
              let streamer = getStreamer()
-             if (streamer == user) {
+             if (streamer == user || user == "") {
                  channel.send(updateList(username: argument, listId: "permalist"))
              }
          }
@@ -242,7 +248,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
              return
          } else {
              let streamer = getStreamer()
-             if (streamer == user) {
+             if (streamer == user || user == "") {
                  channel.send(updateList(username: argument, listId: "watchlist"))
              }
          }
@@ -263,7 +269,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
         }
     case "!unban":
          let streamer = getStreamer()
-         if (streamer == user) {
+         if (streamer == user || user == "") {
              unbanUser(username: argument) { result in
                  channel.send(result)
              }
@@ -276,7 +282,7 @@ func verifyCommand(channel: IRCChannel, user: String, command: String, argument:
              channel.send("I can't ban DoritosChip")
              return
          }
-         else if (streamer == user) {
+         else if (streamer == user || user == "") {
              banUser(username: argument) { result in
                  channel.send(result)
              }

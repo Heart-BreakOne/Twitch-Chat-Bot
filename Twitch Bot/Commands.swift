@@ -93,14 +93,18 @@ func sendCode() -> String {
     }
     switch mode {
     case "duels", "duel":
-        msg = "Code is: \(hasSign ? newCode : code). Coded duels usually means something is being tested or there's PvP clash practice happening, please follow the markers to help with the practice."
+        msg = json["duel"] as! String
+        msg = msg.replacingOccurrences(of: "$code_placeholder$", with: hasSign ? newCode : code)
     case "dungeon", "dungeons":
-        msg = "Dungeon code is: \(hasSign ? newCode : code). This captain's specialty is PvP, they have no clue what they are doing on Dungeons."
+        msg = json["dungeon"] as! String
+        msg = msg.replacingOccurrences(of: "$code_placeholder$", with: hasSign ? newCode : code)
     case "clash":
         if hasSign {
-            msg = "No tank souls, no spies \(newCode) so the spell can be placed."
+            //msg = "No tank souls, no spies \(newCode) so the spell can be placed."
+            msg = json["clash_simple"] as! String
+            msg = msg.replacingOccurrences(of: "$code_placeholder$", with: hasSign ? newCode : code)
         } else {
-            let instructions = "Read the clash instructions and find the 4 random coded words: No spies as they use 100% power and prevent spell placement. No tanks souls. Follow the markers. No spies, no tank souls. No spies, no tank souls."
+            let instructions = json["clash"] as! String
             let powerRange = instructions.range(of: "power")!
             let upperBound = powerRange.upperBound
             var randomIndex = instructions.index(powerRange.upperBound, offsetBy: Int.random(in: 0..<(instructions.distance(from: powerRange.upperBound, to: instructions.endIndex))))
@@ -113,7 +117,7 @@ func sendCode() -> String {
             msg = modifiedString
         }
     default:
-        msg = "No code available for campaign."
+        msg = json["campaign"] as! String
     }
     
     return msg
@@ -216,6 +220,9 @@ func getCurrentStats(battleLog: [[String: Any]]) -> String{
         }
     }
     let total = wins + losses
+    if total == 0 {
+        return "No data to show"
+    }
     let winRate = Int(Double(wins) / Double(total) * 100.0)
     return "Current event stats: \(wins) battles won, \(losses) battles lost, \(winRate)% winning rate."
 }
@@ -272,7 +279,7 @@ func redeemTankSoul(user: String) -> String {
             let lastRedeem = dateFormatter.date(from: lastRedeemString)!
             let qtt = soul["qtt"] as! Int
             
-            if let elapsedHours = Calendar.current.dateComponents([.hour], from: lastRedeem, to: currentTime).hour, elapsedHours >= 24 {
+            if let elapsedHours = Calendar.current.dateComponents([.hour], from: lastRedeem, to: currentTime).hour, elapsedHours >= 12 {
                 let newQtt = qtt + 1
                 tankSouls[index]["qtt"] = newQtt
                 tankSouls[index]["lastRedeem"] = dateFormatter.string(from: currentTime)
@@ -335,9 +342,30 @@ func getUnitOfTheDay() -> String {
         return ""
     }
     let epic = arc4random_uniform(2) == 0 ? " epic " : " "
-    let soul = ["with a tank soul", "with an archer soul", "with a rogue soul", "with a warrior soul", "with a flag soul", "", "", "", "", "", "", "", "", ""].randomElement() ?? ""
+    let json = getJson()
+    let soulArray = json["souls"] as! [String]
+    let randomValue = Int.random(in: 0..<100)
+
+    var soul = ""
+    if randomValue < 80 {
+        soul = ""
+    } else {
+        soul = soulArray.randomElement() ?? ""
+    }
     
     return " today you are a level \(lvl)\(epic)\(lvl >= 20 ? spec : "") \(unitName) \(soul)"
+}
+
+func getSoulInfo(key: String) -> String {
+    //Use the key to fetch matching dictionary value from json
+    let json = getJson()
+    let listOfSouls = json["list_of_souls"] as! [[String: Any]]
+    for soul in listOfSouls {
+        if let mySoul = soul[key] as? String {
+            return mySoul
+        }
+    }
+    return "Did not find a soul."
 }
 
 func calculateLevel(data: [String], commandName: String, user: String) -> String {
